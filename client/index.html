@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Игра Мафия</title>
+</head>
+<body>
+  <h1>Игра Мафия</h1>
+  <!-- Главный экран ввода имени -->
+  <div id="mainScreen">
+    <input type="text" id="userName" placeholder="Введите ваше имя" />
+    <br>
+    <button id="createRoomBtn">Создать комнату</button>
+    <button id="joinRoomBtn">Подключиться к комнате</button>
+  </div>
+  
+  <!-- Меню для создания/подключения к комнате -->
+  <div id="roomMenu" style="display:none;">
+    <input type="text" id="roomName" placeholder="Название комнаты">
+    <input type="password" id="roomPassword" placeholder="Пароль комнаты">
+    <button id="submitRoom">Подтвердить</button>
+  </div>
+  
+  <!-- Экран комнаты с чатом -->
+  <div id="roomScreen" style="display:none;">
+    <h2 id="roomNameDisplay"></h2>
+    <div id="chat" style="border:1px solid #000; height:300px; width:500px; overflow-y:scroll; margin-bottom:10px; padding:5px;"></div>
+    <input type="text" id="chatInput" placeholder="Сообщение">
+    <button id="sendMessage">Отправить</button>
+  </div>
+  
+  <!-- Подключение скрипта socket.io -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let currentRoom = '';
+
+    // Показать меню для создания или подключения к комнате
+    function showRoomMenu(action) {
+      document.getElementById('roomMenu').style.display = 'block';
+      // В обработчике далее определим, какую именно операцию выполняем
+      document.getElementById('submitRoom').onclick = function() {
+        const roomName = document.getElementById('roomName').value.trim();
+        const roomPassword = document.getElementById('roomPassword').value.trim();
+        const userName = document.getElementById('userName').value.trim();
+        if (!roomName || !roomPassword || !userName) {
+          alert('Пожалуйста, заполните все поля.');
+          return;
+        }
+        currentRoom = roomName;
+        if (action === 'create') {
+          socket.emit('createRoom', { roomName, password: roomPassword, userName });
+        } else if (action === 'join') {
+          socket.emit('joinRoom', { roomName, password: roomPassword, userName });
+        }
+      }
+    }
+
+    document.getElementById('createRoomBtn').addEventListener('click', () => {
+      showRoomMenu('create');
+    });
+
+    document.getElementById('joinRoomBtn').addEventListener('click', () => {
+      showRoomMenu('join');
+    });
+
+    // Функция перехода в комнату
+    function enterRoom(roomName) {
+      document.getElementById('mainScreen').style.display = 'none';
+      document.getElementById('roomMenu').style.display = 'none';
+      document.getElementById('roomScreen').style.display = 'block';
+      document.getElementById('roomNameDisplay').textContent = "Комната: " + roomName;
+    }
+
+    // Обработчики событий от сервера
+    socket.on('roomCreated', (data) => {
+      enterRoom(data.roomName);
+    });
+
+    socket.on('joinedRoom', (data) => {
+      enterRoom(data.roomName);
+    });
+
+    socket.on('error', (data) => {
+      alert(data.message);
+    });
+
+    socket.on('chatMessage', (data) => {
+      const chatDiv = document.getElementById('chat');
+      const p = document.createElement('p');
+      p.textContent = `${data.userName}: ${data.message}`;
+      chatDiv.appendChild(p);
+      // Прокрутка вниз, чтобы последнее сообщение было видно
+      chatDiv.scrollTop = chatDiv.scrollHeight;
+    });
+
+    // Отправка сообщения в чат
+    document.getElementById('sendMessage').addEventListener('click', () => {
+      const message = document.getElementById('chatInput').value.trim();
+      const userName = document.getElementById('userName').value.trim();
+      if (message !== '') {
+        socket.emit('chatMessage', { roomName: currentRoom, message, userName });
+        document.getElementById('chatInput').value = '';
+      }
+    });
+  </script>
+</body>
+</html>

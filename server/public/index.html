@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Мафия Онлайн</title>
+</head>
+<body>
+  <h1>Игра "Мафия"</h1>
+
+  <!-- Главный экран -->
+  <div id="mainScreen">
+    <input type="text" id="userName" placeholder="Ваше имя">
+    <button id="createRoomBtn">Создать комнату</button>
+    <button id="joinRoomBtn">Подключиться к комнате</button>
+  </div>
+
+  <!-- Меню создания/подключения -->
+  <div id="roomMenu" style="display:none;">
+    <input type="text" id="roomName" placeholder="Имя комнаты">
+    <input type="password" id="roomPassword" placeholder="Пароль">
+    <button id="submitRoom">Подтвердить</button>
+  </div>
+
+  <!-- Экран комнаты -->
+  <div id="roomScreen" style="display:none;">
+    <h2 id="roomTitle"></h2>
+
+    <div id="playersList"></div>
+    
+    <button id="readyBtn">Я готов!</button>
+
+    <div id="startGameSettings" style="display:none;">
+      <h3>Настройки игры</h3>
+      <label>Количество мафий: <input type="number" id="mafiaCount" value="2" min="1"></label><br>
+      <label><input type="checkbox" id="hasDoctor" checked> Доктор</label><br>
+      <label><input type="checkbox" id="hasDetective" checked> Детектив</label><br>
+      <button id="startGameBtn">Начать игру</button>
+    </div>
+
+    <div id="chat" style="border:1px solid #000; height:300px; width:500px; overflow-y:scroll; margin:10px 0;"></div>
+    <input type="text" id="chatInput" placeholder="Введите сообщение">
+    <button id="sendChatBtn">Отправить</button>
+
+    <div id="roleInfo" style="margin-top:20px;"></div>
+  </div>
+
+  <!-- Подключение socket.io -->
+  <script src="/socket.io/socket.io.js"></script>
+
+  <!-- Подключение основного скрипта -->
+  <script src="client.js"></script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const Player = require('./Player');
+const config = require('../config');
 
 class Lobby {
     constructor(lobbyName, password, creatorSocketId) {
@@ -7,7 +8,7 @@ class Lobby {
         this.creatorSocketId = creatorSocketId;     // Создатель комнаты
         this.players = {};                          // { socketId: Player }
         this.isGameStarted = false;                 // Флаг старта игры
-        this.currentStage = 'lobby'; // 'lobby' | 'day' | 'night'
+        this.currentStage = 'lobby';                // 'lobby' | 'day' | 'night'
     }
 
     addPlayer(socketId, name) {
@@ -34,7 +35,7 @@ class Lobby {
     }
 
     isFull() {
-        return Object.keys(this.players).length >= 9; // максимум 9 игроков
+        return Object.keys(this.players).length >= config.game.maxPlayers;
     }
 
     isEmpty() {

@@ -1,6 +1,7 @@
 const { lobbies } = require('./lobbyController');
 const assignRoles = require('../utils/roleAssigner');
 const Vote = require('../models/Vote');
+const config = require('../config');
 
 exports.startGame = (io, socket, settings) => {
     for (const lobbyName in lobbies) {
@@ -10,8 +11,12 @@ exports.startGame = (io, socket, settings) => {
                 socket.emit('error', { message: 'Не все игроки готовы.' });
                 return;
             }
-
             const players = Object.values(lobby.players);
+            if (players.length < config.game.minPlayers) {
+                socket.emit('error', { message: 'Недостаточно игроков.' });
+                return;
+            }
+
             assignRoles(players, settings);
 
             lobby.isGameStarted = true;

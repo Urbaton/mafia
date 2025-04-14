@@ -23,6 +23,7 @@ class Lobby {
     getPlayerList() {
         return Object.values(this.players).map(player => ({
             name: player.name,
+            socketId: player.socketId,
             isReady: player.isReady,
             isAlive: player.isAlive,
         }));

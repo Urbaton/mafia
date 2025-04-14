@@ -31,26 +31,41 @@ exports.joinLobby = (io, socket, { lobbyName, password, playerName }) => {
         socket.emit('error', { message: 'Лобби заполнено.' });
         return;
     }
+    if (lobbies[lobbyName].currentStage !== "lobby") {
+        socket.emit('error', { message: 'Невозможно подключиться к начавшейся игре.' });
+        return;
+    }
 
     lobby.addPlayer(socket.id, playerName);
+    const allPlayers = lobby.getPlayerList();
+    io.to(lobbyName).emit('new_player', { newPlayer: playerName, players: allPlayers });
     socket.join(lobbyName);
-
-    io.to(lobbyName).emit('new_player', { newPlayer: playerName, players: lobby.getPlayerList() });
-    socket.emit('lobby_joined', { lobbyName, players: lobby.getPlayerList() });
+    socket.emit('lobby_joined', { lobbyName, players: allPlayers });
 };
 
 exports.leaveLobby = (io, socket) => {
     for (const lobbyName in lobbies) {
         const lobby = lobbies[lobbyName];
         if (lobby.players[socket.id]) {
+            const wasCreator = (socket.id === lobby.creatorSocketId);
+
+            const playerLeftName = lobby.players[socket.id].name;
             lobby.removePlayer(socket.id);
             socket.leave(lobbyName);
+            io.to(lobbyName).emit('player_left', { playerLeft: playerLeftName, players: lobby.getPlayerList() });
 
-            // TODO при отключении создателя комнаты, создателем становится другой 
             if (lobby.isEmpty()) {
                 delete lobbies[lobbyName];
             } else {
-                io.to(lobbyName).emit('player_left', { players: lobby.getPlayerList() });
+                if (wasCreator) {
+                    const remainingPlayers = Object.keys(lobby.players);
+                    lobby.creatorSocketId = remainingPlayers[0];
+
+                    io.to(lobbyName).emit('new_creator', {
+                        newCreatorSocketId: lobby.creatorSocketId,
+                        newCreatorName: lobby.players[lobby.creatorSocketId].name,
+                    });
+                }
             }
             break;
         }
@@ -68,5 +83,4 @@ exports.playerReady = (io, socket) => {
     }
 };
 
-// Чтобы использовать lobbies из других контроллеров
 exports.lobbies = lobbies;

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mafia Game</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+    <div id="lobby-screen">
+        <h2>Лобби</h2>
+        <input type="text" id="player-name" placeholder="Ваше имя">
+        <input type="text" id="lobby-name" placeholder="Имя комнаты">
+        <input type="password" id="lobby-password" placeholder="Пароль">
+        <button id="create-lobby">Создать комнату</button>
+        <button id="join-lobby">Подключиться</button>
+    </div>
+
+    <div id="game-screen" style="display: none;">
+        <h2>Игра</h2>
+        <div id="stage-info">Ожидание...</div>
+
+        <div id="player-list"></div>
+
+        <div id="ready-section">
+            <button id="ready-button">Готов</button>
+        </div>
+
+        <div id="vote-section" style="display: none;">
+            <h3>Голосование</h3>
+            <div id="vote-players"></div>
+        </div>
+
+        <div id="chat-section">
+            <h3>Чат</h3>
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Введите сообщение...">
+            <button id="chat-send">Отправить</button>
+        </div>
+
+        <div id="timer">Таймер: --</div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/chat.js"></script>
+    <script src="/js/lobby.js"></script>
+    <script src="/js/game.js"></script>
+</body>
+
+</html>

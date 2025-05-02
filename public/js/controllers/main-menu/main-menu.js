@@ -1,28 +1,31 @@
 import socket from '../socket.js';
+import { initSocketEvents } from './events.js';
 
 export function initMainMenuHandlers() {
     document.getElementById('create-lobby')?.addEventListener('click', createLobby);
     document.getElementById('join-lobby')?.addEventListener('click', joinLobby);
+
+    initSocketEvents();
 }
 
 function createLobby() {
-    const [playerName, lobbyName, lobbyPassword] = getDataFromMenuForm();
+    const [playerName, lobbyName, password] = getDataFromMenuForm();
 
     console.log("SEND create_lobby")
-    socket.emit('create_lobby', { lobbyName, lobbyPassword, playerName });
+    socket.emit('create_lobby', { lobbyName, password, playerName });
 }
 
 function joinLobby() {
-    const [playerName, lobbyName, lobbyPassword] = getDataFromMenuForm();
+    const [playerName, lobbyName, password] = getDataFromMenuForm();
 
     console.log("SEND join_lobby")
-    socket.emit('join_lobby', { lobbyName, password: lobbyPassword, playerName });
+    socket.emit('join_lobby', { lobbyName, password, playerName });
 }
 
 function getDataFromMenuForm() {
     const playerName = document.getElementById('player-name').value;
     const lobbyName = document.getElementById('lobby-name').value;
-    const lobbyPassword = document.getElementById('lobby-password').value;
+    const password = document.getElementById('lobby-password').value;
     
-    return playerName, lobbyName, lobbyPassword;
+    return [playerName, lobbyName, password];
 }

@@ -1,6 +1,6 @@
 import { loadTemplate } from './dom-loader.js';
-import { initLobbyHandlers } from '../ccontrollers/lobby.js';
-import { initMainMenuHandlers } from '../controllers/main-menu.js';
+import { initLobbyHandlers } from '../controllers/lobby-controller/lobby-controller.js';
+import { initMainMenuHandlers } from '../controllers/main-menu/main-menu.js';
 
 const screens = {
     lobby: {
@@ -8,7 +8,7 @@ const screens = {
         init: initLobbyHandlers
     },
     mainMenu: {
-        path: '/components/game.html',
+        path: '/components/main-menu.html',
         init: initMainMenuHandlers
     }
 };
@@ -24,9 +24,8 @@ export async function renderLobby() {
 async function renderScreen(screen) {
     const root = document.getElementById('app');
     root.innerHTML = '';
-
-    const fragment = await loadTemplate(screens[screen]);
+    const fragment = await loadTemplate(screen.path);
     root.appendChild(fragment);
 
-    screens[screen].init();
+    screen.init();
 }

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const ini = require('ini');
+import fs from 'fs';
+import ini from 'ini';
 
 // Загружаем файл конфигурации
 const config = ini.parse(fs.readFileSync('./config/config.ini', 'utf-8'));
@@ -12,4 +12,4 @@ config.game.mafiaDefaultCount = parseInt(config.game.mafiaDefaultCount);
 config.game.dayVotingTimeoutMs = parseInt(config.game.dayVotingTimeoutMs);
 config.game.nightVotingTimeoutMs = parseInt(config.game.nightVotingTimeoutMs);
 
-module.exports = config;
+export default config;

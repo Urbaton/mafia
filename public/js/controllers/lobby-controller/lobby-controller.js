@@ -1,10 +1,13 @@
 import socket from '../socket.js';
+import { initSocketEvents } from './events.js';
 
-export function initMainMenuHandlers() {
+export function initLobbyHandlers() {
     document.getElementById('ready-button').addEventListener('click', markReady);
     document.getElementById('chat-send').addEventListener('click', sendChatMessage);
     document.getElementById('start-game-button').addEventListener('click', startGame);
     document.getElementById('leave-button').addEventListener('click', leaveLobby);
+
+    initSocketEvents();
 }
 
 function leaveLobby() {

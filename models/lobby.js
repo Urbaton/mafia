@@ -1,14 +1,15 @@
-const Player = require('./player');
-const config = require('../config');
+import Player from './player.js';
+import config from '../config/index.js';
 
 class Lobby {
-    constructor(lobbyName, password, creatorSocketId) {
+    constructor(lobbyName, password, ownerSocketId, ownerName) {
         this.lobbyName = lobbyName;                 // Название комнаты
         this.password = password;                   // Пароль комнаты
-        this.creatorSocketId = creatorSocketId;     // Создатель комнаты
+        this.ownerSocketId = ownerSocketId;     // Создатель комнаты
         this.players = {};                          // { socketId: Player }
         this.isGameStarted = false;                 // Флаг старта игры
         this.currentStage = 'lobby';                // 'lobby' | 'day' | 'night'
+        this.addPlayer(ownerSocketId, ownerName);    // Создание игрока
     }
 
     addPlayer(socketId, name) {
@@ -22,10 +23,23 @@ class Lobby {
     }
 
     getPlayerList() {
+        return Object.values(this.players);
+    }
+
+    getPlayerLobbyList() {
         return Object.values(this.players).map(player => ({
             name: player.name,
             socketId: player.socketId,
             isReady: player.isReady,
+            isOwner: this.ownerSocketId === player.socketId,
+        }));
+    }
+
+    getPlayerGameList() {
+        return Object.values(this.players).map(player => ({
+            name: player.name,
+            socketId: player.socketId,
+            role: player.role,
             isAlive: player.isAlive,
         }));
     }
@@ -43,4 +57,4 @@ class Lobby {
     }
 }
 
-module.exports = Lobby;
+export default Lobby;

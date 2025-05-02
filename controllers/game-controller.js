@@ -1,6 +1,6 @@
-const { lobbies } = require('./lobbyController');
-const assignRoles = require('../utils/roleAssigner');
-const Vote = require('../models/Vote');
+const { lobbies } = require('./lobby-controller');
+const assignRoles = require('../utils/role-assigner');
+const Vote = require('../models/vote');
 const config = require('../config');
 
 exports.startGame = (io, socket, settings) => {

@@ -1,0 +1,38 @@
+<template id="lobby-template">
+    <div id="game-screen" style="display: none;">
+        <h2>Игра</h2>
+        <div id="stage-info">Ожидание...</div>
+
+        <div id="player-list"></div>
+
+        <div id="ready-section">
+            <button id="ready-button">Готов</button>
+        </div>
+
+        <div id="settings-section" style="display: none;">
+            <h3>Настройки игры</h3>
+            <label>Количество мафии: <input type="number" id="mafia-count" min="1" max="4" value="2"></label><br>
+            <label><input type="checkbox" id="has-doctor" checked> Доктор</label><br>
+            <label><input type="checkbox" id="has-detective" checked> Детектив</label><br>
+            <button id="start-game-button">Начать игру</button>
+        </div>
+
+        <div id="leave-section">
+            <button id="leave-button">Выйти из комнаты</button>
+        </div>
+
+        <div id="vote-section" style="display: none;">
+            <h3>Голосование</h3>
+            <div id="vote-players"></div>
+        </div>
+
+        <div id="chat-section">
+            <h3>Чат</h3>
+            <div id="chat-messages"></div>
+            <input type="text" id="chat-input" placeholder="Введите сообщение...">
+            <button id="chat-send">Отправить</button>
+        </div>
+
+        <div id="timer">Таймер: --</div>
+    </div>
+</template>

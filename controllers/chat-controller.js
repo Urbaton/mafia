@@ -1,4 +1,4 @@
-const { lobbies } = require('./lobbyController');
+const { lobbies } = require('./lobby-controller');
 
 exports.sendMessage = (io, socket, { message }) => {
     for (const lobbyName in lobbies) {

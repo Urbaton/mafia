@@ -1,51 +1,15 @@
+import socket from '../socket.js';
+
+export function initMainMenuHandlers() {
+    document.getElementById('ready-button').addEventListener('click', markReady);
+    document.getElementById('chat-send').addEventListener('click', sendChatMessage);
+    document.getElementById('start-game-button').addEventListener('click', startGame);
+    document.getElementById('leave-button').addEventListener('click', leaveLobby);
+}
+
 function markReady() {
     socket.emit('ready');
 }
-
-socket.on('game_started', ({ role, players }) => {
-    alert(`Ваша роль: ${role}`);
-    updatePlayerList(players);
-    setStage('day');
-});
-
-socket.on('start_day', ({ players }) => {
-    setStage('day');
-    updatePlayerList(players);
-});
-
-socket.on('start_day_voting', ({ players }) => {
-    startVoting(players, 'day');
-});
-
-socket.on('start_night', ({ players }) => {
-    setStage('night');
-    updatePlayerList(players);
-});
-
-socket.on('start_night_voting', ({ players }) => {
-    startVoting(players, 'night');
-});
-
-socket.on('player_killed', ({ name }) => {
-    addChatMessage(`${name} был убит ночью.`);
-});
-
-socket.on('player_executed', ({ name }) => {
-    addChatMessage(`${name} был казнён днём.`);
-});
-
-socket.on('no_kill', ({ message }) => {
-    addChatMessage(message);
-});
-
-socket.on('no_execution', ({ message }) => {
-    addChatMessage(message);
-});
-
-socket.on('game_over', ({ winner }) => {
-    alert(`Игра окончена! Победили: ${winner}`);
-    location.reload(); // Перезагрузка страницы
-});
 
 function startGame() {
     const mafiaCount = parseInt(document.getElementById('mafia-count').value);
@@ -79,4 +43,9 @@ function startVoting(players, type) {
     });
 
     voteSection.style.display = 'block';
+}
+
+function setStage(stage) {
+    const stageInfo = document.getElementById('stage-info');
+    stageInfo.textContent = (stage === 'day') ? 'День' : 'Ночь';
 }

@@ -1,4 +1,4 @@
-const Lobby = require('../models/Lobby');
+const Lobby = require('../models/lobby');
 
 const lobbies = {};
 

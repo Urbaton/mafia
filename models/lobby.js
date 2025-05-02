@@ -1,4 +1,4 @@
-const Player = require('./Player');
+const Player = require('./player');
 const config = require('../config');
 
 class Lobby {

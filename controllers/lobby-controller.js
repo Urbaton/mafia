@@ -8,17 +8,17 @@ export function leaveLobby(io, socket) {
 
     const playerLeft = lobby.players[socket.id].name;
     lobby.removePlayer(socket.id);
-    socket.leave(lobbyName);
-    io.to(lobbyName).emit('player_left', { playerLeft, players: lobby.getPlayerLobbyList() });
+    socket.leave(lobby.lobbyName);
+    io.to(lobby.lobbyName).emit('player_left', { playerLeft, players: lobby.getPlayerLobbyList() });
 
     if (lobby.isEmpty()) {
-        lobbyStore.deleteLobby(lobbyName);
+        lobbyStore.deleteLobby(lobby.lobbyName);
     } else {
         if (wasOwner) {
             const remainingPlayers = lobby.getPlayerList();
             lobby.ownerSocketId = remainingPlayers[0].socketId;
 
-            io.to(lobbyName).emit('new_lobby_owner', {
+            io.to(lobby.lobbyName).emit('new_lobby_owner', {
                 newOwnerSocketId: lobby.ownerSocketId,
                 newOwnerName: lobby.players[lobby.ownerSocketId].name,
             });

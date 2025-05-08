@@ -3,37 +3,7 @@
 // import Vote from '../models/vote';
 // import config from '../config';
 
-// export function startGame(io, socket, settings) {
-//     for (const lobbyName in lobbies) {
-//         const lobby = lobbies[lobbyName];
-//         if (lobby.ownerSocketId === socket.id) {
-//             if (!lobby.allPlayersReady()) {
-//                 socket.emit('error', { message: 'Не все игроки готовы.' });
-//                 return;
-//             }
-//             const players = Object.values(lobby.players);
-//             if (players.length < config.game.minPlayers) {
-//                 socket.emit('error', { message: 'Недостаточно игроков.' });
-//                 return;
-//             }
 
-//             assignRoles(players, settings);
-
-//             lobby.isGameStarted = true;
-//             lobby.currentStage = 'day';
-
-//             players.forEach(player => {
-//                 io.to(player.socketId).emit('game_started', {
-//                     role: player.role,
-//                     players: players.map(p => ({ name: p.name, isAlive: p.isAlive }))
-//                 });
-//             });
-
-//             console.log(`Game started in lobby: ${lobbyName}`);
-//             break;
-//         }
-//     }
-// };
 
 // export function startNightVoting(io, lobby) {
 //     const mafiaPlayers = Object.values(lobby.players)

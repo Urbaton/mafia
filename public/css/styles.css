@@ -230,3 +230,18 @@ input:focus {
 .btn:hover {
   filter: brightness(0.9);
 }
+
+.ready-button-green {
+  background-color: #2e8b57; /* зелёный */
+  color: white;
+}
+
+.ready-button-red {
+  background-color: #dc3545; /* красный */
+  color: white;
+}
+
+.ready-button-green,
+.ready-button-red {
+    transition: background-color 0.2s ease;
+}

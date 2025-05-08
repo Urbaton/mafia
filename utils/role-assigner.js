@@ -1,22 +1,25 @@
+import { roles } from '../models/constants.js';
+
 function assignRoles(players, settings) {
     const playerList = [...players];
 
     const totalPlayers = playerList.length;
     const mafiaCount = settings.mafiaCount || Math.floor(totalPlayers / 3);
-    const roles = [];
+    const playersRoles = [];
 
-    for (let i = 0; i < mafiaCount; i++) roles.push('mafia');
-    if (settings.hasDoctor) roles.push('doctor');
-    if (settings.hasDetective) roles.push('detective');
+    for (let i = 0; i < mafiaCount; i++) playersRoles.push(roles.MAFIA);
+    if (settings.hasDoctor) playersRoles.push(roles.DOCTOR);
+    if (settings.hasDetective) playersRoles.push(roles.DETECTIVE);
 
-    while (roles.length < totalPlayers) {
-        roles.push('villager');
+    while (playersRoles.length < totalPlayers) {
+        playersRoles.push(roles.CITIZEN);
     }
 
-    shuffleArray(roles);
+    shuffleArray(playersRoles);
 
     playerList.forEach((player, index) => {
-        player.role = roles[index];
+        player.role = playersRoles[index];
+        player.isAlive = true;
     });
 }
 
@@ -27,4 +30,4 @@ function shuffleArray(array) {
     }
 }
 
-module.exports = assignRoles;
+export default assignRoles;

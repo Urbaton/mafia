@@ -6,9 +6,8 @@ export function sendMessage(io, socket, { message }) {
 
     const player = lobby.players[socket.id];
 
-    if (!lobby.isGameStarted) {
-        // Игра ещё не началась — можно писать всем
-        io.to(lobbyName).emit('chat_message', {
+    if (!lobby.gameState.isGameStarted) {
+        io.to(lobby.lobbyName).emit('chat_message', {
             sender: player.name,
             message,
         });
@@ -17,7 +16,7 @@ export function sendMessage(io, socket, { message }) {
 
     // TODO вынести в константу stage
     if (lobby.currentStage === 'day') {
-        io.to(lobbyName).emit('chat_message', {
+        io.to(lobby.lobbyName).emit('chat_message', {
             sender: player.name,
             message,
         });

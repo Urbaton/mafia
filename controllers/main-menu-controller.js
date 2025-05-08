@@ -28,8 +28,15 @@ export function joinLobby(io, socket, { lobbyName, password, playerName }) {
         socket.emit('error', { message: 'Лобби заполнено.' });
         return;
     }
-    if (lobbies[lobbyName].isGameStarted) {
+    if (lobby.gameState.isGameStarted) {
         socket.emit('error', { message: 'Невозможно подключиться к начавшейся игре.' });
+        return;
+    }
+
+    let nameExists = false;
+    lobby.getPlayerList().forEach(player => {nameExists = player.name === playerName});
+    if (nameExists) {
+        socket.emit('error', { message: 'Имя игрока уже занято.' });
         return;
     }
 

@@ -1,15 +1,20 @@
 import Player from './player.js';
+import Game from './game.js';
+import { gameStages } from './constants.js';
 import config from '../config/index.js';
 
 class Lobby {
     constructor(lobbyName, password, ownerSocketId, ownerName) {
-        this.lobbyName = lobbyName;                 // Название комнаты
-        this.password = password;                   // Пароль комнаты
-        this.ownerSocketId = ownerSocketId;     // Создатель комнаты
-        this.players = {};                          // { socketId: Player }
-        this.isGameStarted = false;                 // Флаг старта игры
-        this.currentStage = 'lobby';                // 'lobby' | 'day' | 'night'
-        this.addPlayer(ownerSocketId, ownerName);    // Создание игрока
+        this.lobbyName = lobbyName;
+        this.password = password;
+        this.ownerSocketId = ownerSocketId;
+        this.players = {};   // { socketId: Player }
+        this.game = null;
+        this.addPlayer(ownerSocketId, ownerName);
+    }
+
+    startGame(settings) {
+        this.game = new Game(this.getPlayerList(), settings)
     }
 
     addPlayer(socketId, name) {

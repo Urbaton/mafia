@@ -7,22 +7,6 @@ export function initMainMenuHandlers() {
     document.getElementById('leave-button').addEventListener('click', leaveLobby);
 }
 
-function markReady() {
-    socket.emit('ready');
-}
-
-function startGame() {
-    const mafiaCount = parseInt(document.getElementById('mafia-count').value);
-    const hasDoctor = document.getElementById('has-doctor').checked;
-    const hasDetective = document.getElementById('has-detective').checked;
-
-    socket.emit('start_game', {
-        mafiaCount,
-        hasDoctor,
-        hasDetective
-    });
-}
-
 function startVoting(players, type) {
     const voteSection = document.getElementById('vote-section');
     const votePlayers = document.getElementById('vote-players');

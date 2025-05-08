@@ -30,4 +30,11 @@ export function initSocketEvents() {
         }
         addChatMessage(`!${newOwmerName} is owner of lobby now`);
     });
+
+    // socket.on('game_started', ({ newOwnerSocketId, newOwmerName }) => {
+    //     if (socket.id === newOwnerSocketId) {
+    //         document.getElementById('settings-section').style.display = 'block';
+    //     }
+    //     addChatMessage(`!${newOwmerName} is owner of lobby now`);
+    // });
 }

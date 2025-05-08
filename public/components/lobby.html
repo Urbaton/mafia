@@ -1,38 +1,49 @@
 <template id="lobby-template">
-    <div id="game-screen" style="display: none;">
-        <h2>Игра</h2>
-        <div id="stage-info">Ожидание...</div>
+    <div id="game-screen" class="screen-container game-layout">
+        <!-- Левая часть -->
+        <div class="left-column">
+            <h2 class="screen-title">Комната: <span id="room-name"></span></h2>
 
-        <div id="player-list"></div>
+            <div>
+                <h3>Игроки: <span id="players-count"></span></h3>
+                <div id="players-list" class="players-list">
+                    <!-- Список игроков будет динамически обновляться -->
+                </div>
+            </div>
 
-        <div id="ready-section">
-            <button id="ready-button">Готов</button>
+            <div class="bottom-section">
+                <div id="settings-section" class="settings" style="display: none;">
+                    <h3>Настройки игры</h3>
+                    <div class="settings-item">
+                        <label>Количество мафии:</label>
+                        <input type="number" id="mafia-count" min="1" max="4" value="2">
+                    </div>
+                    <div class="settings-item">
+                        <label><input type="checkbox" id="has-doctor" checked> Доктор</label>
+                    </div>
+                    <div class="settings-item">
+                        <label><input type="checkbox" id="has-detective" checked> Детектив</label>
+                    </div>
+                    <button id="start-game-button" class="btn btn-secondary">Начать игру</button>
+                </div>
+
+                <div id="leave-section" class="centered">
+                    <button id="leave-button" class="btn btn-secondary">Выйти из комнаты</button>
+                    <button id="ready-button" class="btn btn-primary">Готов</button>
+                </div>
+            </div>
         </div>
 
-        <div id="settings-section" style="display: none;">
-            <h3>Настройки игры</h3>
-            <label>Количество мафии: <input type="number" id="mafia-count" min="1" max="4" value="2"></label><br>
-            <label><input type="checkbox" id="has-doctor" checked> Доктор</label><br>
-            <label><input type="checkbox" id="has-detective" checked> Детектив</label><br>
-            <button id="start-game-button">Начать игру</button>
-        </div>
-
-        <div id="leave-section">
-            <button id="leave-button">Выйти из комнаты</button>
-        </div>
-
-        <div id="vote-section" style="display: none;">
-            <h3>Голосование</h3>
-            <div id="vote-players"></div>
-        </div>
-
-        <div id="chat-section">
+        <!-- Правая часть -->
+        <div class="right-column">
             <h3>Чат</h3>
-            <div id="chat-messages"></div>
-            <input type="text" id="chat-input" placeholder="Введите сообщение...">
-            <button id="chat-send">Отправить</button>
+            <div id="chat-section" class="chat-section">
+                <div id="chat-messages" class="chat-messages"></div>
+                <div class="chat-input-group">
+                    <input type="text" id="chat-input" placeholder="Введите сообщение..." style="width: auto;">
+                    <button id="chat-send" class="btn btn-secondary full-width-btn">Отправить</button>
+                </div>
+            </div>
         </div>
-
-        <div id="timer">Таймер: --</div>
     </div>
 </template>

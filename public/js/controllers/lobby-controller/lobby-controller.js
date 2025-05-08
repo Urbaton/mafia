@@ -3,11 +3,27 @@ import { initSocketEvents } from './events.js';
 
 export function initLobbyHandlers() {
     document.getElementById('ready-button').addEventListener('click', markReady);
-    document.getElementById('chat-send').addEventListener('click', sendChatMessage);
+    // document.getElementById('chat-send').addEventListener('click', sendChatMessage);
     document.getElementById('start-game-button').addEventListener('click', startGame);
     document.getElementById('leave-button').addEventListener('click', leaveLobby);
 
     initSocketEvents();
+}
+
+function markReady() {
+    socket.emit('ready');
+}
+
+function startGame() {
+    const mafiaCount = parseInt(document.getElementById('mafia-count').value);
+    const hasDoctor = document.getElementById('has-doctor').checked;
+    const hasDetective = document.getElementById('has-detective').checked;
+
+    socket.emit('start_game', {
+        mafiaCount,
+        hasDoctor,
+        hasDetective
+    });
 }
 
 function leaveLobby() {

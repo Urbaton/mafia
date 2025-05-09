@@ -92,57 +92,57 @@ export function processNextStage(io, socket) {
 
     switch (stage[1]) {
         case gameStages.NIGHT_PREPARE[1]:
-            processNightPrepareStage()
+            processNightPrepareStage(io, socket, lobby)
             break;
         case gameStages.MAFIA_VOTE[1]:
-            processMafiaVoteStage()
+            processMafiaVoteStage(io, socket, lobby)
             break;
         case gameStages.DETECTIVE_VOTE[1]:
-            processDetectiveVoteStage()
+            processDetectiveVoteStage(io, socket, lobby)
             break;
         case gameStages.DOCTOR_VOTE[1]:
-            processDoctorVoteStage()
+            processDoctorVoteStage(io, socket, lobby)
             break;
         case gameStages.DAY_PREPARE[1]:
-            processDayPrepareStage()
+            processDayPrepareStage(io, socket, lobby)
             break;
         case gameStages.CITIZEN_VOTE[1]:
-            processCitizenVoteStage()
+            processCitizenVoteStage(io, socket, lobby)
             break;
         case gameStages.CITIZEN_VOTE_RESULT[1]:
-            processCitizenVoteResultStage()
+            processCitizenVoteResultStage(io, socket, lobby)
             break;
     };
 };
 
-function processNightPrepareStage(lobby) {
+function processNightPrepareStage(io, socket, lobby) {
     io.to(lobby.lobbyName).emit('night_prepare', {
         countdownMs: config.game.prepareNightDurationMs,
         serverTime: Date.now()
     });
 };
 
-function processMafiaVoteStage(lobby) {
+function processMafiaVoteStage(io, socket, lobby) {
 
 };
 
-function processDetectiveVoteStage(lobby) {
+function processDetectiveVoteStage(io, socket, lobby) {
 
 };
 
-function processDoctorVoteStage(lobby) {
+function processDoctorVoteStage(io, socket, lobby) {
 
 };
 
-function processDayPrepareStage(lobby) {
+function processDayPrepareStage(io, socket, lobby) {
 
 };
 
-function processCitizenVoteStage(lobby) {
+function processCitizenVoteStage(io, socket, lobby) {
 
 };
 
-function processCitizenVoteResultStage(lobby) {
+function processCitizenVoteResultStage(io, socket, lobby) {
 
 };
 

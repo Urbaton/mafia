@@ -1,6 +1,5 @@
 import Player from './player.js';
 import Game from './game.js';
-import { gameStages } from './constants.js';
 import config from '../config/index.js';
 
 class Lobby {

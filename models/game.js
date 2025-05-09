@@ -5,7 +5,7 @@ class Game {
     constructor(players, settings) {
         this.players = players;
         this.gameOver = false
-        this.currentStage = 0;
+        this.currentStage = gameStages.ROLE_ASSIGN;
         this.mafiaCount = settings.mafiaCount;
         this.hasDoctor = settings.hasDoctor;
         this.hasDetective = settings.hasDetective;
@@ -19,25 +19,25 @@ class Game {
 
     nextStage() {
         if (this.gameOver) {
-            this.currentStage = gameStagesArray.length - 1
+            this.currentStage = gameStages.GAME_END
             return gameStages.GAME_END
         }
 
-        const next = (this.currentStage + 1) % gameStagesArray.length;
-        if (gameStagesArray[next] == gameStages.GAME_END) {
+        const next = (this.currentStage[1] + 1) % gameStagesArray.length;
+        if (gameStagesArray[next][1] == gameStages.GAME_END[1]) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next] == gameStages.ROLE_ASSIGN) {
+        if (gameStagesArray[next][1] == gameStages.ROLE_ASSIGN[1]) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next] == gameStages.DOCTOR_VOTE && !this.hasDoctor) {
+        if (gameStagesArray[next][1] == gameStages.DOCTOR_VOTE[1] && !this.hasDoctor) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next] == gameStages.DETECTIVE_VOTE && !this.hasDetective) {
+        if (gameStagesArray[next][1] == gameStages.DETECTIVE_VOTE[1] && !this.hasDetective) {
             next = (next + 1) % gameStagesArray.length
         }
 
-        this.currentStage = next
+        this.currentStage = gameStagesArray[next]
         return gameStagesArray[next]
     }
 

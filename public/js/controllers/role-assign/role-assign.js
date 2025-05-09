@@ -6,6 +6,8 @@ import { sendChatMessage } from '../chat/chat-controller.js';
 export function initRoleAssignHandlers(data) {
     initSocketEvents();
     showRole(data)
+
+    startRoleTimer(data.countdownMs, data.serverTime);
 }
 
 function showRole({ role, sameRolePlayers }) {
@@ -62,4 +64,23 @@ function showOtherMafias(otherMafias) {
 function hideOtherMafias() {
     const mafiaSection = document.getElementById('mafia-members-section');
     mafiaSection.classList.add('hidden');
+}
+
+export let roleTimer = null;
+
+function startRoleTimer(countdownMs, serverTime = null) {
+    // Определяем время до переключения
+    let effectiveDelay = countdownMs;
+
+    if (serverTime !== null) {
+        const now = Date.now();
+        const delta = now - serverTime;
+        effectiveDelay = Math.max(0, countdownMs - delta);
+        console.log(`Коррекция таймера: прошло ${delta}мс, запускаем таймер на ${effectiveDelay}мс`);
+    }
+
+    roleTimer = setTimeout(() => {
+        console.log('Таймер истёк, отправляем screen-change-request');
+        socket.emit('fihish_role_assign');
+    }, effectiveDelay);
 }

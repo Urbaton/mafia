@@ -8,7 +8,7 @@ export function initSocketEvents() {
     if (socketInitialized) return;
     socketInitialized = true;
 
-    socket.on('prepare_night', ({ newPlayer, players }) => {
+    socket.on('prepare_night', () => {
         console.log("IN prepare_night")
         if (roleTimer !== null) {
             clearTimeout(roleTimer);

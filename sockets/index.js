@@ -1,7 +1,7 @@
 import { leaveLobby, playerReady, playerUnready, startGame } from '../controllers/lobby-controller.js';
 import { createLobby, joinLobby } from '../controllers/main-menu-controller.js';
 import { sendMessage } from '../controllers/chat-controller.js';
-import { getRole } from '../controllers/game-controller.js';
+import { getRole, finishRoleAssign } from '../controllers/game-controller.js';
 
 
 export default function (io) {
@@ -20,7 +20,7 @@ export default function (io) {
 
         // Игра
         socket.on('get_role', () => getRole(io, socket));
-        socket.on('fihish_role_assign', () => getRole(io, socket));
+        socket.on('finish_role_assign', () => finishRoleAssign(io, socket));
         socket.on('fihish_night_prepare', () => getRole(io, socket));
         socket.on('mafia_vote', () => getRole(io, socket));
         socket.on('fihish_mafia_vote', () => getRole(io, socket));

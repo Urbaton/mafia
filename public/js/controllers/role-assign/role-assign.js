@@ -81,6 +81,6 @@ function startRoleTimer(countdownMs, serverTime = null) {
 
     roleTimer = setTimeout(() => {
         console.log('Таймер истёк, отправляем screen-change-request');
-        socket.emit('fihish_role_assign');
+        socket.emit('finish_role_assign');
     }, effectiveDelay);
 }

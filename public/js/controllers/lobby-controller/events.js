@@ -46,9 +46,9 @@ export function initSocketEvents() {
         console.log("OUT get_role")
     });
 
-    socket.on('role_assign', ({role, sameRolePlayers}) => {
+    socket.on('role_assign', (data) => {
         console.log("IN role_assign")
-        console.log(role, sameRolePlayers)
-        renderRoleAssign({role, sameRolePlayers})
+        console.log(data)
+        renderRoleAssign(data)
     });
 }

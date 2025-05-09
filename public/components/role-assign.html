@@ -1,49 +1,17 @@
-<template id="lobby-template">
-    <div id="game-screen" class="screen-container game-layout">
-        <!-- Левая часть -->
-        <div class="left-column">
-            <h2 class="screen-title">Комната: <span id="room-name"></span></h2>
-
-            <div>
-                <h3>Игроки: <span id="players-count"></span></h3>
-                <div id="players-list" class="players-list">
-                    <!-- Список игроков будет динамически обновляться -->
-                </div>
-            </div>
-
-            <div class="bottom-section">
-                <div id="settings-section" class="settings" style="display: none;">
-                    <h3>Настройки игры</h3>
-                    <div class="settings-item">
-                        <label>Количество мафии:</label>
-                        <input type="number" id="mafia-count" min="1" max="2" value="1">
-                    </div>
-                    <div class="settings-item">
-                        <label><input type="checkbox" id="has-doctor" checked> Доктор</label>
-                    </div>
-                    <div class="settings-item">
-                        <label><input type="checkbox" id="has-detective" checked> Детектив</label>
-                    </div>
-                    <button id="start-game-button" class="btn btn-secondary">Начать игру</button>
-                </div>
-
-                <div id="leave-section" class="centered">
-                    <button id="leave-button" class="btn btn-secondary">Выйти из комнаты</button>
-                    <button id="ready-button" class="btn btn-primary">Готов</button>
-                </div>
-            </div>
+<template id="role-template">
+    <div id="role-screen" class="screen-container role-layout">
+        <div id="role-info" class="role-info">
+            <h1 class="player-role">Ваша роль: <span id="player-role-text">Мирный житель</span></h1>
+            <p id="role-description" class="role-description">
+                Ваша задача — вычислить мафию и выжить до конца игры.
+            </p>
         </div>
 
-        <!-- Правая часть -->
-        <div class="right-column">
-            <h3>Чат</h3>
-            <div id="chat-section" class="chat-section">
-                <div id="chat-messages" class="chat-messages"></div>
-                <div class="chat-input-group">
-                    <input type="text" id="chat-input" placeholder="Введите сообщение..." style="width: auto;">
-                    <button id="chat-send" class="btn btn-secondary full-width-btn">Отправить</button>
-                </div>
-            </div>
+        <div id="mafia-members-section" class="mafia-members hidden">
+            <h3>Другие мафии:</h3>
+            <ul id="mafia-members-list" class="mafia-list">
+                <!-- Динамический список -->
+            </ul>
         </div>
     </div>
 </template>

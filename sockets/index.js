@@ -1,7 +1,8 @@
 import { leaveLobby, playerReady, playerUnready, startGame } from '../controllers/lobby-controller.js';
-// import { startGame, voteNight, voteDay } from '../controllers/game-controller.js';
-import { sendMessage } from '../controllers/chat-controller.js';
 import { createLobby, joinLobby } from '../controllers/main-menu-controller.js';
+import { sendMessage } from '../controllers/chat-controller.js';
+import { getRole } from '../controllers/game-controller.js';
+
 
 export default function (io) {
     io.on('connection', (socket) => {
@@ -18,10 +19,19 @@ export default function (io) {
         socket.on('start_game', (data) => startGame(io, socket, data));
 
         // Игра
-        // 
-        // socket.on('vote_night', (data) => voteNight(io, socket, data));
-        // socket.on('vote_day', (data) => voteDay(io, socket, data));
-
+        socket.on('get_role', () => getRole(io, socket));
+        socket.on('fihish_role_assign', () => getRole(io, socket));
+        socket.on('fihish_night_prepare', () => getRole(io, socket));
+        socket.on('mafia_vote', () => getRole(io, socket));
+        socket.on('fihish_mafia_vote', () => getRole(io, socket));
+        socket.on('doctor_vote', () => getRole(io, socket));
+        socket.on('fihish_doctor_vote', () => getRole(io, socket));
+        socket.on('detective_vote', () => getRole(io, socket));
+        socket.on('fihish_detective_vote', () => getRole(io, socket));
+        socket.on('fihish_day_prepare', () => getRole(io, socket));
+        socket.on('citizen_vote', () => getRole(io, socket));
+        socket.on('fihish_citizens_vote', () => getRole(io, socket));
+        socket.on('fihish_citizens_vote_result', () => getRole(io, socket));
 
         // Чат
         socket.on('send_chat_message', (data) => sendMessage(io, socket, data));

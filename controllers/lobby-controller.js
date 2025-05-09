@@ -1,5 +1,6 @@
 import lobbyStore from '../database/lobbyStore.js';
 import { roles } from '../models/constants.js';
+import config from '../config/index.js';
 
 export function leaveLobby(io, socket) {
     const lobby = lobbyStore.getLobbyByPlayer(socket.id);
@@ -20,7 +21,7 @@ export function leaveLobby(io, socket) {
             const newOwner = remainingPlayers[0];
             lobby.ownerSocketId = newOwner.socketId;
 
-            if (!lobby.gameState.isGameStarted) {
+            if (!lobby.isGameStarted) {
                 io.to(lobby.lobbyName).emit('new_lobby_owner', {
                     newOwnerSocketId: lobby.ownerSocketId,
                     newOwnerName: newOwner.name,
@@ -30,7 +31,7 @@ export function leaveLobby(io, socket) {
         }
     }
 
-    if (!lobby.gameState.isGameStarted || !playerLeft.isAlive) return;
+    if (!lobby.isGameStarted || !playerLeft.isAlive) return;
 
     if (playerLeft.role === roles.MAFIA) {
         lobby.game.killMafia();
@@ -92,18 +93,9 @@ export function startGame(io, socket, settings) {
 
     lobby.startGame(settings);
 
-    let mafiaPlayers = players.filter(player => player.role === roles.MAFIA);
+    io.to(lobby.lobbyName).emit('game_started');
 
-    players.forEach(player => {
-        const sameRolePlayers = player.role === roles.MAFIA ? mafiaPlayers : []
-
-        io.to(player.socketId).emit('game_started', {
-            role: player.role,
-            players: sameRolePlayers
-        });
-    });
-
-    console.log(`Game started in lobby: ${lobbyName}`);
+    console.log(`Game started in lobby: ${lobby.lobbyName}`);
 };
 
 function checkSettings(settings, playersCount) {

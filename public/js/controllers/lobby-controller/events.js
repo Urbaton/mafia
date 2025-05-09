@@ -1,7 +1,7 @@
 import socket from '../socket.js';
 import { updatePlayerList } from './lobby-controller.js';
 import { addChatMessage } from '../chat/chat-controller.js';
-import { renderRoleAssigment } from '../../utils/router.js';
+import { renderRoleAssign } from '../../utils/router.js';
 
 let socketInitialized = false;
 
@@ -40,7 +40,15 @@ export function initSocketEvents() {
         addChatMessage(`!${newOwnerName} is owner of lobby now`);
     });
 
-    socket.on('game_started', ({ role, sameRolePlayers }) => {
-        renderRoleAssigment({ role, sameRolePlayers });
+    socket.on('game_started', () => {
+        console.log("IN game_started")
+        socket.emit('get_role');
+        console.log("OUT get_role")
+    });
+
+    socket.on('role_assign', ({role, sameRolePlayers}) => {
+        console.log("IN role_assign")
+        console.log(role, sameRolePlayers)
+        renderRoleAssign({role, sameRolePlayers})
     });
 }

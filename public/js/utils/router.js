@@ -14,7 +14,7 @@ const screens = {
     },
     roleAssign: {
         path: '/components/role-assign.html',
-        init: initMainMenuHandlers
+        init: initRoleAssignHandlers
     }
 };
 
@@ -26,7 +26,7 @@ export async function renderLobby(data) {
     await renderScreen(screens.lobby, data)
 }
 
-export async function roleAssign(data) {
+export async function renderRoleAssign(data) {
     await renderScreen(screens.roleAssign, data)
 }
 

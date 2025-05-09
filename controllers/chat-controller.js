@@ -6,7 +6,7 @@ export function sendMessage(io, socket, { message }) {
 
     const player = lobby.players[socket.id];
 
-    if (!lobby.gameState.isGameStarted) {
+    if (!lobby.isGameStarted) {
         io.to(lobby.lobbyName).emit('chat_message', {
             sender: player.name,
             message,

@@ -28,7 +28,7 @@ export function joinLobby(io, socket, { lobbyName, password, playerName }) {
         socket.emit('error', { message: 'Лобби заполнено.' });
         return;
     }
-    if (lobby.gameState.isGameStarted) {
+    if (lobby.isGameStarted) {
         socket.emit('error', { message: 'Невозможно подключиться к начавшейся игре.' });
         return;
     }

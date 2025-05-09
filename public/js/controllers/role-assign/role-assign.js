@@ -1,0 +1,65 @@
+import socket from '../socket.js';
+import { initSocketEvents } from './events.js';
+import { renderMainMenu } from '../../utils/router.js';
+import { sendChatMessage } from '../chat/chat-controller.js';
+
+export function initRoleAssignHandlers(data) {
+    initSocketEvents();
+    showRole(data)
+}
+
+function showRole({ role, sameRolePlayers }) {
+    // Захватываем элементы по ID
+    const roleInfo = document.getElementById('role-info');
+    const roleText = document.getElementById('player-role-text');
+    const roleDescription = document.getElementById('role-description');
+
+    // Очистим все возможные классы (на случай повторных вызовов)
+    roleInfo.classList.remove('role-mafia', 'role-doctor', 'role-detective', 'role-citizen');
+
+    switch (role) {
+        case 'MAFIA':
+            roleInfo.classList.add('role-mafia');
+            roleText.textContent = 'Мафия';
+            roleDescription.textContent = 'Вы член мафии. Ваша цель — устранить всех мирных жителей. Осторожно: не выдайте себя!';
+            showOtherMafias(sameRolePlayers);
+            break;
+        case 'DOCTOR':
+            roleInfo.classList.add('role-doctor');
+            roleText.textContent = 'Доктор';
+            roleDescription.textContent = 'Вы доктор. Каждую ночь вы можете лечить одного игрока и защищать его от мафии.';
+            hideOtherMafias();
+            break;
+        case 'DETECTIVE':
+            roleInfo.classList.add('role-detective');
+            roleText.textContent = 'Детектив';
+            roleDescription.textContent = 'Вы детектив. Каждую ночь вы можете проверить одного игрока и узнать его роль.';
+            hideOtherMafias();
+            break;
+        case 'CITIZEN':
+            roleInfo.classList.add('role-citizen');
+            roleText.textContent = 'Мирный житель';
+            roleDescription.textContent = 'Вы мирный житель. Ваша задача — вычислить мафию и выжить до конца игры.';
+            hideOtherMafias();
+            break;
+    }
+}
+
+function showOtherMafias(otherMafias) {
+    const mafiaSection = document.getElementById('mafia-members-section');
+    const mafiaList = document.getElementById('mafia-members-list');
+
+    mafiaSection.classList.remove('hidden');
+    mafiaList.innerHTML = '';
+
+    otherMafias.forEach(name => {
+        const li = document.createElement('li');
+        li.textContent = name;
+        mafiaList.appendChild(li);
+    });
+}
+
+function hideOtherMafias() {
+    const mafiaSection = document.getElementById('mafia-members-section');
+    mafiaSection.classList.add('hidden');
+}

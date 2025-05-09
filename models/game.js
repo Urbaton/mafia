@@ -4,7 +4,6 @@ import assignRoles from '../utils/role-assigner.js';
 class Game {
     constructor(players, settings) {
         this.players = players;
-        this.isStarted = true;
         this.gameOver = false
         this.currentStage = 0;
         this.mafiaCount = settings.mafiaCount;
@@ -31,10 +30,10 @@ class Game {
         if (gameStagesArray[next] == gameStages.ROLE_ASSIGN) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next] == gameStages.DOCTOR_VOTE && !this.doctorAlive) {
+        if (gameStagesArray[next] == gameStages.DOCTOR_VOTE && !this.hasDoctor) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next] == gameStages.DETECTIVE_VOTE && !this.detectiveAlive) {
+        if (gameStagesArray[next] == gameStages.DETECTIVE_VOTE && !this.hasDetective) {
             next = (next + 1) % gameStagesArray.length
         }
 

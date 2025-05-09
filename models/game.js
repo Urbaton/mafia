@@ -75,13 +75,38 @@ class Game {
 
     defaultVotes() {
         this.votes = {
-            mafiaVotes: [],
-            mafiaVotesResult: "",
-            detectiveVote: "",
-            doctorVote: "",
-            citizensVotes: [],
-            citizensVotesResult: "",
+            curVotes: [],
+            mafiaVotes: null,
+            detectiveVote: null,
+            doctorVote: null,
+            citizensVotes: null,
         }
+    }
+
+    getMostVotedAndClearVotes() {
+        if (this.votes.curVotes.length === 0) return null;
+
+        const freqMap = new Map();
+
+        for (const item of this.votes.curVotes) {
+            freqMap.set(item, (freqMap.get(item) || 0) + 1);
+        }
+
+        let maxFreq = 0;
+        const candidates = [];
+
+        for (const [key, count] of freqMap.entries()) {
+            if (count > maxFreq) {
+                maxFreq = count;
+                candidates.length = 0;
+                candidates.push(key);
+            } else if (count === maxFreq) {
+                candidates.push(key);
+            }
+        }
+        this.votes.curVotes = []
+        const randomIndex = Math.floor(Math.random() * candidates.length);
+        return candidates[randomIndex];
     }
 
     getAlivePlayers() {

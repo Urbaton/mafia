@@ -1,11 +1,8 @@
 import socket from '../socket.js';
-import { initSocketEvents } from './events.js';
 
 export function initMainMenuHandlers() {
     document.getElementById('create-lobby')?.addEventListener('click', createLobby);
     document.getElementById('join-lobby')?.addEventListener('click', joinLobby);
-
-    initSocketEvents();
 }
 
 function createLobby() {

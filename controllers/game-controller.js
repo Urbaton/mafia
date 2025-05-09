@@ -64,22 +64,85 @@ export function finishCitizenVoteResult(io, socket) {
     finishStage(io, socket, gameStages.CITIZEN_VOTE_RESULT)
 };
 
+export function mafiaVote(io, socket, data) {
+
+};
+
+export function doctorVote(io, socket, data) {
+
+};
+
+export function detectiveVote(io, socket, data) {
+
+};
+
+export function citizenVote(io, socket, data) {
+
+};
+
 export function processNextStage(io, socket) {
     const lobby = lobbyStore.getLobbyByPlayer(socket.id);
     if (!lobby) return;
 
-    if (lobby.game.currentStage[1] != gameStages.NIGHT_PREPARE[1]) return;
+    const players = lobby.getPlayerList();
+    const player = players.filter(player => player.socketId === socket.id)[0];
+    const stage = lobby.game.currentStage;
 
-    const stage = lobby.game.nextStage()
-    console.log(stage)
+    if (!player.isAlive) return
 
-    if (stage[1] === gameStages.NIGHT_PREPARE[1]) {
-        io.to(lobby.lobbyName).emit('night_prepare', {
-            countdownMs: config.game.roleAssignDurationMs,
-            serverTime: Date.now()
-        });
-    }
+    switch (stage[1]) {
+        case gameStages.NIGHT_PREPARE[1]:
+            processNightPrepareStage()
+            break;
+        case gameStages.MAFIA_VOTE[1]:
+            processMafiaVoteStage()
+            break;
+        case gameStages.DETECTIVE_VOTE[1]:
+            processDetectiveVoteStage()
+            break;
+        case gameStages.DOCTOR_VOTE[1]:
+            processDoctorVoteStage()
+            break;
+        case gameStages.DAY_PREPARE[1]:
+            processDayPrepareStage()
+            break;
+        case gameStages.CITIZEN_VOTE[1]:
+            processCitizenVoteStage()
+            break;
+        case gameStages.CITIZEN_VOTE_RESULT[1]:
+            processCitizenVoteResultStage()
+            break;
+    };
 };
 
+function processNightPrepareStage(lobby) {
+    io.to(lobby.lobbyName).emit('night_prepare', {
+        countdownMs: config.game.prepareNightDurationMs,
+        serverTime: Date.now()
+    });
+};
 
+function processMafiaVoteStage(lobby) {
+
+};
+
+function processDetectiveVoteStage(lobby) {
+
+};
+
+function processDoctorVoteStage(lobby) {
+
+};
+
+function processDayPrepareStage(lobby) {
+
+};
+
+function processCitizenVoteStage(lobby) {
+
+};
+
+function processCitizenVoteResultStage(lobby) {
+
+};
 

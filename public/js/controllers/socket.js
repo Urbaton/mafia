@@ -8,7 +8,7 @@ import {
 
 const socket = io();
 
-// General events
+//#General events 
 
 socket.on('connect', () => {
     console.warn('Подключение к серверу установлено');
@@ -28,7 +28,9 @@ socket.on('error', ({ message }) => {
     alert('Ошибка: ' + message);
 });
 
-// Lobby events
+//#endregion
+
+//#Lobby events 
 
 socket.on('lobby_created', ({ lobbyName, players }) => {
     console.log("IN lobby_created")
@@ -79,7 +81,9 @@ socket.on('game_started', () => {
     console.log("OUT get_role")
 });
 
-// Game events
+//#endregion
+
+//#Game events 
 
 socket.on('stage_end', () => {
     console.log("IN stage_end")
@@ -157,5 +161,7 @@ socket.on('mafia_vote_wait', (data) => {
 //     clearRoleTimer();
 //     renderMafiaVoteWait(data);
 // });
+
+//#endregion
 
 export default socket;

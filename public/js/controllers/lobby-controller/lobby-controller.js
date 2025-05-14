@@ -9,7 +9,6 @@ export function initLobbyHandlers(data) {
     document.getElementById('start-game-button').addEventListener('click', startGame);
     document.getElementById('leave-button').addEventListener('click', leaveLobby);
 
-    initSocketEvents();
     updatePlayerList(data.players);
     showSettings(data.players);
 }

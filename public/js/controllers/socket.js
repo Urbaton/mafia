@@ -1,9 +1,14 @@
-import { renderMainMenu } from '../utils/router.js';
 import { addChatMessage } from '../controllers/chat/chat-controller.js';
 import { clearRoleTimer } from '../utils/timer.js'
-import { renderLobby, renderNightPrepare, renderMafiaVote, renderMafiaVoteWait } from '../utils/router.js';
+import { updatePlayerList } from './lobby-controller/lobby-controller.js';
+import {
+    renderMainMenu, renderLobby, renderRoleAssign, renderNightPrepare, renderMafiaVote,
+    renderMafiaVoteWait,
+} from '../utils/router.js';
 
 const socket = io();
+
+// General events
 
 socket.on('connect', () => {
     console.warn('Подключение к серверу установлено');
@@ -15,10 +20,15 @@ socket.on('chat_message', ({ sender, message }) => {
     addChatMessage(`${sender}: ${message}`);
 });
 
-socket.on('stage_end', () => {
-    console.log("IN stage_end")
-    socket.emit('next_stage');
+socket.on('disconnect', () => {
+    console.warn('Подключение к серверу разорвано');
 });
+
+socket.on('error', ({ message }) => {
+    alert('Ошибка: ' + message);
+});
+
+// Lobby events
 
 socket.on('lobby_created', ({ lobbyName, players }) => {
     console.log("IN lobby_created")
@@ -30,6 +40,56 @@ socket.on('lobby_joined', ({ lobbyName, players }) => {
     console.log("IN lobby_joined")
     console.log(lobbyName, players)
     renderLobby({ players: players });
+});
+
+socket.on('new_player', ({ newPlayer, players }) => {
+    console.log("IN new_player")
+    updatePlayerList(players);
+    addChatMessage(`!${newPlayer} joined the lobby`);
+});
+
+socket.on('player_ready', ({ players }) => {
+    console.log("IN player_ready")
+    updatePlayerList(players);
+});
+
+socket.on('player_unready', ({ players }) => {
+    console.log("IN player_unready")
+    updatePlayerList(players);
+});
+
+
+socket.on('player_left', ({ playerLeft, players }) => {
+    console.log("IN player_ready")
+    updatePlayerList(players);
+    addChatMessage(`!${playerLeft} left the lobby`);
+});
+
+socket.on('new_lobby_owner', ({ newOwnerSocketId, newOwnerName, players }) => {
+    if (socket.id === newOwnerSocketId) {
+        document.getElementById('settings-section').style.display = 'block';
+    }
+    updatePlayerList(players);
+    addChatMessage(`!${newOwnerName} is owner of lobby now`);
+});
+
+socket.on('game_started', () => {
+    console.log("IN game_started")
+    socket.emit('get_role');
+    console.log("OUT get_role")
+});
+
+// Game events
+
+socket.on('stage_end', () => {
+    console.log("IN stage_end")
+    socket.emit('next_stage');
+});
+
+socket.on('role_assign', (data) => {
+    console.log("IN role_assign")
+    console.log(data)
+    renderRoleAssign(data)
 });
 
 socket.on('night_prepare', (data) => {
@@ -97,13 +157,5 @@ socket.on('mafia_vote_wait', (data) => {
 //     clearRoleTimer();
 //     renderMafiaVoteWait(data);
 // });
-
-socket.on('disconnect', () => {
-    console.warn('Подключение к серверу разорвано');
-});
-
-socket.on('error', ({ message }) => {
-    alert('Ошибка: ' + message);
-});
 
 export default socket;

@@ -1,6 +1,6 @@
 import { renderMainMenu } from '../utils/router.js';
 import { addChatMessage } from '../controllers/chat/chat-controller.js';
-import { clearRoleTimer } from '../../utils/timer.js'
+import { clearRoleTimer } from '../utils/timer.js'
 import { renderLobby, renderNightPrepare, renderMafiaVote, renderMafiaVoteWait } from '../utils/router.js';
 
 const socket = io();

@@ -23,7 +23,7 @@ class Game {
             return gameStages.GAME_END
         }
 
-        const next = (this.currentStage[1] + 1) % gameStagesArray.length;
+        let next = (this.currentStage[1]) % gameStagesArray.length;
         if (gameStagesArray[next][1] == gameStages.GAME_END[1]) {
             next = (next + 1) % gameStagesArray.length
         }

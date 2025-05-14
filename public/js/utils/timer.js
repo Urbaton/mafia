@@ -1,14 +1,14 @@
 let roleTimer = null;
 
-export function getRoleTimer() {
+export function getTimer() {
     return roleTimer;
 }
 
-export function setRoleTimer(timer) {
+export function setTimer(timer) {
     roleTimer = timer;
 }
 
-export function clearRoleTimer() {
+export function clearTimer() {
     if (roleTimer !== null) {
         clearTimeout(roleTimer);
         roleTimer = null;
@@ -16,7 +16,7 @@ export function clearRoleTimer() {
 }
 
 export function startTimerEvent(countdownMs, serverTime, event, socket) {
-    clearRoleTimer()
+    clearTimer()
 
     let effectiveDelay = countdownMs;
     if (serverTime !== null) {
@@ -29,10 +29,10 @@ export function startTimerEvent(countdownMs, serverTime, event, socket) {
     const timer = setTimeout(() => {
         console.log('Таймер истёк, отправляем screen-change-request');
         socket.emit(event);
-        setRoleTimer(null);
+        setTimer(null);
     }, effectiveDelay);
 
-    setRoleTimer(timer);
+    setTimer(timer);
     startProgressBar(effectiveDelay)
 }
 

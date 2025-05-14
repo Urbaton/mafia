@@ -25,7 +25,7 @@ function finishStage(io, socket, currentStage) {
     if (!lobby) return;
 
     if (lobby.game.currentStage[1] != currentStage[1]) return;
-
+    console.log(lobby.game.currentStage)
     const stage = lobby.game.nextStage()
     console.log(stage)
 
@@ -90,6 +90,7 @@ export function processNextStage(io, socket) {
 
     if (!player.isAlive) return
 
+    console.log(stage[1], gameStages.NIGHT_PREPARE[1])
     switch (stage[1]) {
         case gameStages.NIGHT_PREPARE[1]:
             processNightPrepareStage(io, socket, lobby)
@@ -116,7 +117,7 @@ export function processNextStage(io, socket) {
 };
 
 function processNightPrepareStage(io, socket, lobby) {
-    io.to(lobby.lobbyName).emit('night_prepare', {
+    socket.emit('night_prepare', {
         countdownMs: config.game.prepareNightDurationMs,
         serverTime: Date.now()
     });

@@ -2,7 +2,7 @@ import { leaveLobby, playerReady, playerUnready, startGame } from '../controller
 import { createLobby, joinLobby } from '../controllers/main-menu-controller.js';
 import { sendMessage } from '../controllers/chat-controller.js';
 import {
-    getRole, finishRoleAssign, finishNightPrepare, finishMafiaVote,
+    getRole, finishRoleAssign, finishNightPrepare, finishMafiaVote, processNextStage,
     finishDoctorVote, finishDetectiveVote, finishDayPrepare, finishCitizenVote,
     finishCitizenVoteResult, mafiaVote, doctorVote, detectiveVote, citizenVote
 } from '../controllers/game-controller.js';

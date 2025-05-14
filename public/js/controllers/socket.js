@@ -1,5 +1,5 @@
 import { addChatMessage } from '../controllers/chat/chat-controller.js';
-import { clearRoleTimer } from '../utils/timer.js'
+import { clearTimer } from '../utils/timer.js'
 import { updatePlayerList } from './lobby-controller/lobby-controller.js';
 import {
     renderMainMenu, renderLobby, renderRoleAssign, renderNightPrepare, renderMafiaVote,
@@ -98,19 +98,19 @@ socket.on('role_assign', (data) => {
 
 socket.on('night_prepare', (data) => {
     console.log("IN night_prepare")
-    clearRoleTimer();
+    clearTimer();
     renderNightPrepare(data);
 });
 
 socket.on('mafia_vote', (data) => {
     console.log("IN mafia_vote")
-    clearRoleTimer();
+    clearTimer();
     renderMafiaVote(data);
 });
 
 socket.on('mafia_vote_wait', (data) => {
     console.log("IN mafia_vote")
-    clearRoleTimer();
+    clearTimer();
     renderMafiaVoteWait(data);
 });
 

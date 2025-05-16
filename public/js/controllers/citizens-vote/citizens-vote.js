@@ -2,14 +2,14 @@ import socket from '../socket.js';
 import { startTimerEvent } from '../../utils/timer.js'
 import { sendChatMessage } from '../chat/chat-controller.js';
 
-export function initMafiaVoteHandlers(data) {
+export function initCitizensVoteHandlers(data) {
     defaultGlobals()
 
     document.getElementById('confirm-target-button').addEventListener('click', confirmTarget);
     document.getElementById('chat-send').addEventListener('click', sendChatMessage);
     renderTargets(data.players)
 
-    startTimerEvent(data.countdownMs, data.serverTime, 'finish_mafia_vote', socket);
+    startTimerEvent(data.countdownMs, data.serverTime, 'finish_citizens_vote', socket);
 }
 
 let selectedTargetId = null;
@@ -50,7 +50,7 @@ function confirmTarget() {
 
     console.log(`Цель выбрана: ${selectedTargetId}`);
 
-    socket.emit('mafia_vote', { targetId: selectedTargetId });
+    socket.emit('citizen_vote', { targetId: selectedTargetId });
 
     console.log()
 

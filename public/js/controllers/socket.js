@@ -1,9 +1,11 @@
 import { addChatMessage } from '../controllers/chat/chat-controller.js';
 import { clearTimer } from '../utils/timer.js'
 import { updatePlayerList } from './lobby-controller/lobby-controller.js';
+import { handleDetectiveResult } from './detective-vote/detective-vote.js';
 import {
     renderMainMenu, renderLobby, renderRoleAssign, renderNightPrepare, renderMafiaVote,
-    renderMafiaVoteWait,
+    renderMafiaVoteWait, renderDetectiveVote, renderDetectiveVoteWait, renderDoctorVote,
+    renderDoctorVoteWait, renderDayPrepare, renderCitizensVote, renderCitizensVoteResult
 } from '../utils/router.js';
 
 const socket = io();
@@ -114,53 +116,58 @@ socket.on('mafia_vote_wait', (data) => {
     renderMafiaVoteWait(data);
 });
 
-// socket.on('detective_vote', (data) => {
-//     console.log("IN detective_vote")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('detective_vote', (data) => {
+    console.log("IN detective_vote")
+    clearTimer();
+    renderDetectiveVote(data);
+});
 
-// socket.on('detective_vote_wait', (data) => {
-//     console.log("IN detective_vote_wait")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('detective_vote_result', (data) => {
+    console.log("IN detective_vote_result")
+    handleDetectiveResult(data);
+});
 
-// socket.on('doctor_vote', (data) => {
-//     console.log("IN doctor_vote")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('detective_vote_wait', (data) => {
+    console.log("IN detective_vote_wait")
+    clearTimer();
+    renderDetectiveVoteWait(data);
+});
 
-// socket.on('doctor_vote_wait', (data) => {
-//     console.log("IN doctor_vote_wait")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('doctor_vote', (data) => {
+    console.log("IN doctor_vote")
+    clearTimer();
+    renderDoctorVote(data);
+});
 
-// socket.on('day_prepare', (data) => {
-//     console.log("IN day_prepare")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('doctor_vote_wait', (data) => {
+    console.log("IN doctor_vote_wait")
+    clearTimer();
+    renderDoctorVoteWait(data);
+});
 
-// socket.on('citizen_vote', (data) => {
-//     console.log("IN day_prepare")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('day_prepare', (data) => {
+    console.log("IN day_prepare")
+    clearTimer();
+    renderDayPrepare(data);
+});
 
-// socket.on('citizen_vote_result', (data) => {
-//     console.log("IN day_prepare")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('citizen_vote', (data) => {
+    console.log("IN day_prepare")
+    clearTimer();
+    renderCitizensVote(data);
+});
 
-// socket.on('game_over', (data) => {
-//     console.log("IN day_prepare")
-//     clearRoleTimer();
-//     renderMafiaVoteWait(data);
-// });
+socket.on('citizen_vote_result', (data) => {
+    console.log("IN citizen_vote_result")
+    clearTimer();
+    renderCitizensVoteResult(data);
+});
+
+socket.on('game_over', (data) => {
+    console.log("IN day_prepare")
+    clearTimer();
+    renderMafiaVoteWait(data);
+});
 
 //#endregion
 

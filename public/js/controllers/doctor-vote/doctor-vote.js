@@ -1,15 +1,13 @@
 import socket from '../socket.js';
-import { startTimerEvent } from '../../utils/timer.js'
-import { sendChatMessage } from '../chat/chat-controller.js';
+import { startTimerEvent } from '../../utils/timer.js';
 
-export function initMafiaVoteHandlers(data) {
-    defaultGlobals()
+export function initDoctorVoteHandlers(data) {
+    defaultGlobals();
 
     document.getElementById('confirm-target-button').addEventListener('click', confirmTarget);
-    document.getElementById('chat-send').addEventListener('click', sendChatMessage);
-    renderTargets(data.players)
+    renderTargets(data.players);
 
-    startTimerEvent(data.countdownMs, data.serverTime, 'finish_mafia_vote', socket);
+    startTimerEvent(data.countdownMs, data.serverTime, 'finish_doctor_vote', socket);
 }
 
 let selectedTargetId = null;
@@ -35,7 +33,6 @@ function renderTargets(players) {
             document.querySelectorAll('.player-list-item').forEach(el => el.classList.remove('selected'));
             item.classList.add('selected');
             selectedTargetId = player.socketId;
-            console.log(selectedTargetId)
             document.getElementById('confirm-target-button').disabled = false;
         });
 
@@ -46,14 +43,10 @@ function renderTargets(players) {
 function confirmTarget() {
     if (!selectedTargetId || targetConfirmed) return;
 
-    targetConfirmed = true
+    targetConfirmed = true;
 
-    console.log(`Цель выбрана: ${selectedTargetId}`);
-
-    socket.emit('mafia_vote', { targetId: selectedTargetId });
-
-    console.log()
-
-    const confirmButton = document.getElementById('confirm-target-button')
+    const confirmButton = document.getElementById('confirm-target-button');
     confirmButton.disabled = true;
+
+    socket.emit('doctor_vote', { targetId: selectedTargetId });
 }

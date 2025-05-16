@@ -4,6 +4,14 @@ import { initMainMenuHandlers } from '../controllers/main-menu/main-menu.js';
 import { initRoleAssignHandlers } from '../controllers/role-assign/role-assign.js';
 import { initNightPrepareHandlers } from '../controllers/night-prepare/night-prepare.js';
 import { initMafiaVoteHandlers } from '../controllers/mafia-vote/mafia-vote.js';
+import { initMafiaVoteWaitHandlers } from '../controllers/mafia-vote/mafia-vote-wait.js';
+import { initDetectiveVoteWaitHandlers } from '../controllers/detective-vote/detective-vote-wait.js';
+import { initDetectiveVoteHandlers } from '../controllers/detective-vote/detective-vote.js';
+import { initDoctorVoteWaitHandlers } from '../controllers/doctor-vote/doctor-vote-wait.js';
+import { initDoctorVoteHandlers } from '../controllers/doctor-vote/doctor-vote.js';
+import { initDayPrepareHandlers } from '../controllers/day-prepare/dat-prepare.js';
+import { initCitizensVoteHandlers } from '../controllers/citizens-vote/citizens-vote.js';
+import { initCitizensVoteResultHandlers } from '../controllers/citizens-vote-result/citizens-vote-result.js';
 
 const screens = {
     lobby: {
@@ -24,12 +32,40 @@ const screens = {
     },
     mafiaVoteWait: {
         path: '/components/mafia-vote-wait.html',
-        init: initMafiaVoteHandlers
+        init: initMafiaVoteWaitHandlers
     },
     mafiaVote: {
         path: '/components/mafia-vote.html',
         init: initMafiaVoteHandlers
-    }
+    },
+    detectiveVoteWait: {
+        path: '/components/detective-vote-wait.html',
+        init: initDetectiveVoteWaitHandlers
+    },
+    detectiveVote: {
+        path: '/components/detective-vote.html',
+        init: initDetectiveVoteHandlers
+    },
+    doctorVoteWait: {
+        path: '/components/doctor-vote-wait.html',
+        init: initDoctorVoteWaitHandlers
+    },
+    doctorVote: {
+        path: '/components/doctor-vote.html',
+        init: initDoctorVoteHandlers
+    },
+    dayPrepare: {
+        path: '/components/day-prepare.html',
+        init: initDayPrepareHandlers
+    },
+    citizensVote: {
+        path: '/components/citizens-vote.html',
+        init: initCitizensVoteHandlers
+    },
+    citizensVoteResult: {
+        path: '/components/citizens-vote-result.html',
+        init: initCitizensVoteResultHandlers
+    },
 };
 
 export async function renderMainMenu() {
@@ -54,6 +90,34 @@ export async function renderMafiaVoteWait(data) {
 
 export async function renderMafiaVote(data) {
     await renderScreen(screens.mafiaVote, data)
+}
+
+export async function renderDetectiveVoteWait(data) {
+    await renderScreen(screens.detectiveVoteWait, data)
+}
+
+export async function renderDetectiveVote(data) {
+    await renderScreen(screens.detectiveVote, data)
+}
+
+export async function renderDoctorVoteWait(data) {
+    await renderScreen(screens.doctorVoteWait, data)
+}
+
+export async function renderDoctorVote(data) {
+    await renderScreen(screens.doctorVote, data)
+}
+
+export async function renderDayPrepare(data) {
+    await renderScreen(screens.dayPrepare, data)
+}
+
+export async function renderCitizensVote(data) {
+    await renderScreen(screens.citizensVote, data)
+}
+
+export async function renderCitizensVoteResult(data) {
+    await renderScreen(screens.citizensVoteResult, data)
 }
 
 async function renderScreen(screen, data) {

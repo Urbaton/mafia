@@ -26,17 +26,17 @@ export default function (io) {
         socket.on('next_stage', () => processNextStage(io, socket));
         socket.on('get_role', () => getRole(io, socket));
         socket.on('finish_role_assign', () => finishRoleAssign(io, socket));
-        socket.on('fihish_night_prepare', () => finishNightPrepare(io, socket));
-        socket.on('mafia_vote', () => mafiaVote(io, socket, data));
-        socket.on('fihish_mafia_vote', () => finishMafiaVote(io, socket));
-        socket.on('doctor_vote', () => doctorVote(io, socket, data));
-        socket.on('fihish_doctor_vote', () => finishDoctorVote(io, socket));
-        socket.on('detective_vote', () => detectiveVote(io, socket, data));
-        socket.on('fihish_detective_vote', () => finishDetectiveVote(io, socket));
-        socket.on('fihish_day_prepare', () => finishDayPrepare(io, socket));
-        socket.on('citizen_vote', () => citizenVote(io, socket, data));
-        socket.on('fihish_citizens_vote', () => finishCitizenVote(io, socket));
-        socket.on('fihish_citizens_vote_result', () => finishCitizenVoteResult(io, socket));
+        socket.on('finish_night_prepare', () => finishNightPrepare(io, socket));
+        socket.on('mafia_vote', (data) => mafiaVote(io, socket, data));
+        socket.on('finish_mafia_vote', () => finishMafiaVote(io, socket));
+        socket.on('doctor_vote', (data) => doctorVote(io, socket, data)); 
+        socket.on('finish_doctor_vote', () => finishDoctorVote(io, socket));
+        socket.on('detective_vote', (data) => detectiveVote(io, socket, data));
+        socket.on('finish_detective_vote', () => finishDetectiveVote(io, socket));
+        socket.on('finish_day_prepare', () => finishDayPrepare(io, socket));
+        socket.on('citizen_vote', (data) => citizenVote(io, socket, data));
+        socket.on('finish_citizens_vote', () => finishCitizenVote(io, socket));
+        socket.on('finish_citizens_vote_result', () => finishCitizenVoteResult(io, socket));
 
         // Чат
         socket.on('send_chat_message', (data) => sendMessage(io, socket, data));

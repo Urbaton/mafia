@@ -4,8 +4,9 @@ import assignRoles from '../utils/role-assigner.js';
 class Game {
     constructor(players, settings) {
         this.players = players;
-        this.gameOver = false
+        this.gameOver = false;
         this.currentStage = gameStages.ROLE_ASSIGN;
+        this.stageStartTime = 0;
         this.mafiaCount = settings.mafiaCount;
         this.hasDoctor = settings.hasDoctor;
         this.hasDetective = settings.hasDetective;
@@ -13,8 +14,18 @@ class Game {
         this.doctorAlive = settings.hasDoctor;
         this.detectiveAlive = settings.hasDetective;
         this.votes = {};
-        this.defaultVotes()
+        this.defaultVotes();
         assignRoles(players, settings);
+    }
+
+
+    getAlivePlayers() {
+        
+    }
+
+
+    getAlivePlayers() {
+        return this.players.filter(player => player.isAlive);
     }
 
     nextStage() {
@@ -23,7 +34,7 @@ class Game {
             return gameStages.GAME_END
         }
 
-        let next = (this.currentStage[1]) % gameStagesArray.length;
+        let next = (this.currentStage[1] + 1) % gameStagesArray.length;
         if (gameStagesArray[next][1] == gameStages.GAME_END[1]) {
             next = (next + 1) % gameStagesArray.length
         }
@@ -42,8 +53,8 @@ class Game {
     }
 
     checkGameState() {
-        const mafiaWin = isMafiaWin();
-        const citizensWin = areCitizensWin();
+        const mafiaWin = this.isMafiaWin();
+        const citizensWin = this.areCitizensWin();
         this.gameOver = mafiaWin || citizensWin;
         return {
             gameOver: this.gameOver,
@@ -53,7 +64,7 @@ class Game {
     }
 
     isMafiaWin() {
-        const alivePlayers = getAlivePlayers();
+        const alivePlayers = this.getAlivePlayers();
         return alivePlayers.length - this.mafiaAliveCount <= this.mafiaAliveCount;
     }
 
@@ -61,8 +72,8 @@ class Game {
         return this.mafiaAliveCount === 0;
     }
 
-    killPlayer() {
-        this.mafiaCount = Math.max(0, this.mafiaCount - 1);
+    killMafia() {
+        this.mafiaAliveCount = Math.max(0, this.mafiaAliveCount - 1);
     }
 
     killDoctor() {
@@ -75,20 +86,29 @@ class Game {
 
     defaultVotes() {
         this.votes = {
-            curVotes: [],
-            mafiaVotes: null,
+            mafiaVotes: [],
+            mafiaVotesResult: null,
             detectiveVote: null,
             doctorVote: null,
-            citizensVotes: null,
+            citizensVotes: [],
+            citizensVotesResult: null,
         }
     }
 
-    getMostVotedAndClearVotes() {
-        if (this.votes.curVotes.length === 0) return null;
+    getMafiaMostVoted() {
+        return this.getMostVotedAndClearVotes(this.votes.mafiaVotes)
+    }
+
+    getCitizensMostVoted() {
+        return this.getMostVotedAndClearVotes(this.votes.citizensVotes)
+    }
+
+    getMostVotedAndClearVotes(votes) {
+        if (votes.length === 0) return null;
 
         const freqMap = new Map();
 
-        for (const item of this.votes.curVotes) {
+        for (const item of votes) {
             freqMap.set(item, (freqMap.get(item) || 0) + 1);
         }
 
@@ -104,13 +124,8 @@ class Game {
                 candidates.push(key);
             }
         }
-        this.votes.curVotes = []
         const randomIndex = Math.floor(Math.random() * candidates.length);
         return candidates[randomIndex];
-    }
-
-    getAlivePlayers() {
-        return this.players.filter(player => player.isAlive)
     }
 }
 

@@ -5,6 +5,9 @@ import config from '../config/index.js';
 class Lobby {
     constructor(lobbyName, password, ownerSocketId, ownerName) {
         this.lobbyName = lobbyName;
+        this.lobbyNameAlive = lobbyName + "Alive";
+        this.lobbyNameDead = lobbyName + "Dead";
+        this.lobbyNameMafia = lobbyName + "Mafia";
         this.isGameStarted = false;
         this.password = password;
         this.ownerSocketId = ownerSocketId;
@@ -14,7 +17,12 @@ class Lobby {
     }
 
     startGame(settings) {
-        this.game = new Game(this.getPlayerList(), settings)
+        this.game = new Game(this.getPlayerList(), settings);
+    }
+
+    endGame() {
+        this.game = null;
+        this.isGameStarted = false;
     }
 
     addPlayer(socketId, name) {

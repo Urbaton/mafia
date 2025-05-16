@@ -316,22 +316,26 @@ input:focus {
 }
 
 .role-mafia {
-    border: 3px solid #dc3545; /* Красный */
+    border: 3px solid #dc3545;
+    /* Красный */
     background-color: #ffe6e6;
 }
 
 .role-doctor {
-    border: 3px solid #1e90ff; /* Синий */
+    border: 3px solid #1e90ff;
+    /* Синий */
     background-color: #e6f0ff;
 }
 
 .role-detective {
-    border: 3px solid #6f42c1; /* Фиолетовый */
+    border: 3px solid #6f42c1;
+    /* Фиолетовый */
     background-color: #f3e6ff;
 }
 
 .role-citizen {
-    border: 3px solid #2e8b57; /* Зелёный */
+    border: 3px solid #2e8b57;
+    /* Зелёный */
     background-color: #e6ffe6;
 }
 
@@ -345,7 +349,8 @@ input:focus {
     width: 100%;
     max-width: 800px;
     padding: 40px;
-    background-color: #1e1e1e;  /* тёмный фон */
+    background-color: #1e1e1e;
+    /* тёмный фон */
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     text-align: center;
@@ -378,7 +383,49 @@ input:focus {
 
 .progress-bar {
     height: 100%;
-    width: 100%; /* изначально заполнен */
-    background-color: #2e8b57; /* зелёный */
+    width: 100%;
+    /* изначально заполнен */
+    background-color: #2e8b57;
+    /* зелёный */
     transition: width 0.1s linear;
+}
+
+/*  */
+
+.detective-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+}
+
+.full-width-column {
+    width: 100%;
+}
+
+.detective-result {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.detective-result.success {
+    color: #2e8b57;
+    /* зелёный */
+}
+
+.detective-result.fail {
+    color: #dc3545;
+    /* красный */
+}
+
+.hidden {
+    display: none;
 }

@@ -18,6 +18,7 @@ config.game.doctorVoteDurationMs = parseInt(config.game.doctorVoteDurationMs);
 config.game.prepareDayDurationMs = parseInt(config.game.prepareDayDurationMs);
 config.game.citizensVoteDurationMs = parseInt(config.game.citizensVoteDurationMs);
 config.game.citizensVoteResultDurationMs = parseInt(config.game.citizensVoteResultDurationMs);
+config.game.gameResultDurationMs = parseInt(config.game.gameResultDurationMs);
 
 
 export default config;

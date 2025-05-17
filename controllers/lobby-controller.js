@@ -11,7 +11,12 @@ export function leaveLobby(io, socket) {
     const playerLeft = lobby.players[socket.id];
     lobby.removePlayer(socket.id);
     socket.leave(lobby.lobbyName);
-    io.to(lobby.lobbyName).emit('player_left', { playerLeft: playerLeft.name, players: lobby.getPlayerLobbyList() });
+    socket.leave(lobby.lobbyNameAlive);
+    socket.leave(lobby.lobbyNameMafia);
+    socket.leave(lobby.lobbyNameDead);
+
+    if (!lobby.isGameStarted)
+        io.to(lobby.lobbyName).emit('player_left', { playerLeft: playerLeft.name, players: lobby.getPlayerLobbyList() });
 
     if (lobby.isEmpty()) {
         lobbyStore.deleteLobby(lobby.lobbyName);
@@ -43,11 +48,6 @@ export function leaveLobby(io, socket) {
 
     if (playerLeft.role === roles.DETECTIVE) {
         lobby.game.killDetective();
-    }
-
-    const state = lobby.game.checkGameState();
-    if (state.gameOver) {
-        io.to(lobby.lobbyName).emit('game_over', state);
     }
 };
 

@@ -9,9 +9,15 @@ export function getRole(io, socket) {
     if (!lobby) return;
 
     const players = lobby.getPlayerList();
-    const player = players.filter(player => player.socketId === socket.id)[0];
+    const player = lobby.players[socket.id];
     const mafiaPlayers = players.filter(player => player.role === roles.MAFIA && player.socketId != socket.id);
     const sameRolePlayers = player.role === roles.MAFIA ? mafiaPlayers : []
+
+    socket.join(lobby.lobbyNameAlive);
+
+    if (player.role === roles.MAFIA)
+        socket.join(lobby.lobbyNameMafia);
+
     socket.emit('role_assign', {
         role: player.role,
         sameRolePlayers,
@@ -25,14 +31,22 @@ function finishStage(io, socket, currentStage, callback = null) {
     if (!lobby) return;
 
     if (lobby.game.currentStage[1] != currentStage[1]) return;
-    const stage = lobby.game.nextStage()
-    lobby.game.stageStartTime = Date.now()
-    console.log(stage)
 
     if (callback != null)
         callback(lobby)
 
-    io.to(lobby.lobbyName).emit('stage_end');
+    let group = lobby.lobbyNameAlive;
+
+    const gameState = lobby.game.updateGameState()
+    if (gameState.gameOver) {
+        group = lobby.lobbyName
+    }
+
+    const stage = lobby.game.nextStage()
+    lobby.game.stageStartTime = Date.now()
+    console.log(stage)
+
+    io.to(group).emit('stage_end');
 };
 
 export function finishRoleAssign(io, socket) {
@@ -60,7 +74,16 @@ export function finishDetectiveVote(io, socket) {
 };
 
 export function finishDayPrepare(io, socket) {
-    finishStage(io, socket, gameStages.DAY_PREPARE)
+    const resultVotes = (lobby) => {
+        const mafiaTarget = lobby.game.votes.mafiaVotesResult;
+        const doctorTarget = lobby.game.votes.doctorVote;
+        if (mafiaTarget !== null && mafiaTarget !== doctorTarget) {
+            killPlayer(lobby, lobby.players[mafiaTarget])
+        }
+        lobby.game.defaultVotes()
+    }
+
+    finishStage(io, socket, gameStages.DAY_PREPARE, resultVotes)
 };
 
 export function finishCitizenVote(io, socket) {
@@ -72,7 +95,25 @@ export function finishCitizenVote(io, socket) {
 };
 
 export function finishCitizenVoteResult(io, socket) {
-    finishStage(io, socket, gameStages.CITIZEN_VOTE_RESULT)
+    const resultVotes = (lobby) => {
+        const citizensVotesResult = lobby.game.votes.citizensVotesResult;
+        if (citizensVotesResult !== null) {
+            killPlayer(lobby, lobby.players[citizensVotesResult]);
+        }
+        lobby.game.defaultVotes()
+    }
+    finishStage(io, socket, gameStages.CITIZEN_VOTE_RESULT, resultVotes)
+};
+
+export function finishGameOver(io, socket) {
+    const lobby = lobbyStore.getLobbyByPlayer(socket.id);
+    if (!lobby) return;
+
+    if (!lobby.isGameStarted) return;
+    lobby.endGame();
+
+    const allPlayers = lobby.getPlayerLobbyList();
+    io.to(lobby.lobbyName).emit('lobby_joined', { lobbyName: lobby.lobbyName, players: allPlayers });
 };
 
 export function mafiaVote(io, socket, data) {
@@ -119,22 +160,11 @@ export function processNextStage(io, socket) {
     const lobby = lobbyStore.getLobbyByPlayer(socket.id);
     if (!lobby) return;
 
-    const gameState = lobby.game.checkGameState()
-
-    if (gameState.gameOver) {
-        socket.emit('game_over', {
-            countdownMs: config.game.prepareNightDurationMs,
-            serverTime: lobby.game.stageStartTime,
-            gameState: gameState
-        });
-    }
-
-    const players = lobby.getPlayerList();
-    const player = players.filter(player => player.socketId === socket.id)[0];
+    const player = lobby.players[socket.id];
     const stage = lobby.game.currentStage;
 
-    if (!player.isAlive) {
-        // TODO функция для перекидывания игрока в комнату ожидания: снять роли и добавить роль ожидания
+    if (!player.isAlive && !lobby.game.gameOver) {
+        handleKilledPlayer(io, socket, lobby, player)
         return
     }
 
@@ -160,8 +190,32 @@ export function processNextStage(io, socket) {
         case gameStages.CITIZEN_VOTE_RESULT[1]:
             processCitizenVoteResultStage(io, socket, lobby)
             break;
+        case gameStages.GAME_END[1]:
+            processGameOver(io, socket, lobby)
+            break;
     };
 };
+
+function processGameOver(io, socket, lobby) {
+    const mafiaWin = !lobby.game.areCitizensWin();
+
+    const player = lobby.players[socket.id];
+
+    player.isAlive = true;
+    player.isInWaitRoom = false;
+    player.isReady = false;
+    player.role = null;
+
+    socket.leave(lobby.lobbyNameAlive);
+    socket.leave(lobby.lobbyNameMafia);
+    socket.leave(lobby.lobbyNameDead);
+
+    socket.emit('game_over', {
+        countdownMs: config.game.gameResultDurationMs,
+        serverTime: lobby.game.stageStartTime,
+        mafiaWin: mafiaWin
+    });
+}
 
 function processNightPrepareStage(io, socket, lobby) {
     socket.emit('night_prepare', {
@@ -176,10 +230,10 @@ function processMafiaVoteStage(io, socket, lobby) {
         countdownMs: config.game.mafiaVoteDurationMs,
         serverTime: lobby.game.stageStartTime,
     }
-    if (player.role[1] != roles.MAFIA[1]) {
+    if (player.role != roles.MAFIA) {
         socket.emit('mafia_vote_wait', baseData);
     } else {
-        baseData["players"] = lobby.getPlayerList().filter(x => x.role[1] != roles.MAFIA[1] && x.isAlive).map(player => ({
+        baseData["players"] = lobby.getPlayerList().filter(x => x.role != roles.MAFIA && x.isAlive).map(player => ({
             name: player.name,
             socketId: player.socketId,
         }));
@@ -193,10 +247,10 @@ function processDetectiveVoteStage(io, socket, lobby) {
         countdownMs: config.game.detectiveVoteDurationMs,
         serverTime: lobby.game.stageStartTime,
     }
-    if (player.role[1] != roles.DETECTIVE[1]) {
+    if (player.role != roles.DETECTIVE) {
         socket.emit('detective_vote_wait', baseData);
     } else {
-        baseData["players"] = lobby.getPlayerList().filter(x => x.role[1] != roles.DETECTIVE[1] && x.isAlive).map(player => ({
+        baseData["players"] = lobby.getPlayerList().filter(x => x.role != roles.DETECTIVE && x.isAlive).map(player => ({
             name: player.name,
             socketId: player.socketId,
         }));
@@ -210,10 +264,10 @@ function processDoctorVoteStage(io, socket, lobby) {
         countdownMs: config.game.doctorVoteDurationMs,
         serverTime: lobby.game.stageStartTime,
     }
-    if (player.role[1] != roles.DOCTOR[1]) {
+    if (player.role != roles.DOCTOR) {
         socket.emit('doctor_vote_wait', baseData);
     } else {
-        baseData["players"] = lobby.getPlayerList().filter(x => x.role[1] != roles.DOCTOR[1] && x.isAlive).map(player => ({
+        baseData["players"] = lobby.getPlayerList().filter(x => x.isAlive).map(player => ({
             name: player.name,
             socketId: player.socketId,
         }));
@@ -233,8 +287,6 @@ function processDayPrepareStage(io, socket, lobby) {
 
     if (mafiaTarget !== null && mafiaTarget !== doctorTarget) {
         const player = lobby.players[mafiaTarget];
-        killPlayer(lobby, player);
-
         baseData.killedPlayer = player.name;
     }
 
@@ -264,24 +316,32 @@ function processCitizenVoteResultStage(io, socket, lobby) {
 
     if (citizensVotesResult !== null) {
         const player = lobby.players[citizensVotesResult];
-        killPlayer(lobby, player);
-
         baseData.killedPlayer = player.name;
     }
 
     socket.emit("citizen_vote_result", baseData)
 };
 
-// TODO добавить оставшиеся страницы (победитель, комната ожидания), дописать все методы на беке, добалять в группу по ролям
-
 function killPlayer(lobby, player) {
     if (!player.isAlive) return;
 
     player.isAlive = false;
-    if (player.role[1] == roles.DOCTOR)
+    if (player.role == roles.DOCTOR)
         lobby.game.killDoctor()
-    else if (player.role[1] == roles.DETECTIVE)
+    else if (player.role == roles.DETECTIVE)
         lobby.game.killDetective()
-    else if (player.role[1] == roles.MAFIA)
+    else if (player.role == roles.MAFIA)
         lobby.game.killMafia()
+}
+
+function handleKilledPlayer(io, socket, lobby, player) {
+    if (player.isInWaitRoom) return;
+
+    socket.leave(lobby.lobbyNameAlive);
+    socket.leave(lobby.lobbyNameMafia);
+
+    const allPlayers = lobby.getPlayerWaitRoomList();
+    io.to(lobby.lobbyNameDead).emit('new_player_wait_room', { newPlayer: player.name, players: allPlayers });
+    socket.join(lobby.lobbyNameDead);
+    socket.emit('wait_room_joined', { lobbyName: lobby.lobbyName, players: allPlayers });
 }

@@ -15,17 +15,11 @@ class Game {
         this.detectiveAlive = settings.hasDetective;
         this.votes = {};
         this.defaultVotes();
-        assignRoles(players, settings);
+        assignRoles(Object.values(players), settings);
     }
 
-
     getAlivePlayers() {
-        
-    }
-
-
-    getAlivePlayers() {
-        return this.players.filter(player => player.isAlive);
+        return Object.values(this.players).filter(player => player.isAlive);
     }
 
     nextStage() {
@@ -52,7 +46,8 @@ class Game {
         return gameStagesArray[next]
     }
 
-    checkGameState() {
+    updateGameState() {
+        console.log(this.getAlivePlayers())
         const mafiaWin = this.isMafiaWin();
         const citizensWin = this.areCitizensWin();
         this.gameOver = mafiaWin || citizensWin;

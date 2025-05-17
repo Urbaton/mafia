@@ -12,6 +12,8 @@ import { initDoctorVoteHandlers } from '../controllers/doctor-vote/doctor-vote.j
 import { initDayPrepareHandlers } from '../controllers/day-prepare/dat-prepare.js';
 import { initCitizensVoteHandlers } from '../controllers/citizens-vote/citizens-vote.js';
 import { initCitizensVoteResultHandlers } from '../controllers/citizens-vote-result/citizens-vote-result.js';
+import { initWaitRoomHandlers } from '../controllers/wait-room/wait-room.js';
+import { initGameResultHandlers } from '../controllers/game-result/game-result.js';
 
 const screens = {
     lobby: {
@@ -66,7 +68,23 @@ const screens = {
         path: '/components/citizens-vote-result.html',
         init: initCitizensVoteResultHandlers
     },
+    waitRoom: {
+        path: '/components/wait-room.html',
+        init: initWaitRoomHandlers
+    },
+    gameOver: {
+        path: '/components/game-over.html',
+        init: initGameResultHandlers
+    },
 };
+
+export async function renderWaitRoom(data) {
+    await renderScreen(screens.waitRoom, data)
+}
+
+export async function renderGameOver(data) {
+    await renderScreen(screens.gameOver, data)
+}
 
 export async function renderMainMenu() {
     await renderScreen(screens.mainMenu)

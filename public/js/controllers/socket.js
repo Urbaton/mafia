@@ -1,11 +1,13 @@
 import { addChatMessage } from '../controllers/chat/chat-controller.js';
 import { clearTimer } from '../utils/timer.js'
 import { updatePlayerList } from './lobby-controller/lobby-controller.js';
+import { updateWaitRoomPlayerList } from './wait-room/wait-room.js';
 import { handleDetectiveResult } from './detective-vote/detective-vote.js';
 import {
     renderMainMenu, renderLobby, renderRoleAssign, renderNightPrepare, renderMafiaVote,
     renderMafiaVoteWait, renderDetectiveVote, renderDetectiveVoteWait, renderDoctorVote,
-    renderDoctorVoteWait, renderDayPrepare, renderCitizensVote, renderCitizensVoteResult
+    renderDoctorVoteWait, renderDayPrepare, renderCitizensVote, renderCitizensVoteResult,
+    renderGameOver, renderWaitRoom
 } from '../utils/router.js';
 
 const socket = io();
@@ -152,7 +154,7 @@ socket.on('day_prepare', (data) => {
 });
 
 socket.on('citizen_vote', (data) => {
-    console.log("IN day_prepare")
+    console.log("IN citizen_vote")
     clearTimer();
     renderCitizensVote(data);
 });
@@ -164,9 +166,21 @@ socket.on('citizen_vote_result', (data) => {
 });
 
 socket.on('game_over', (data) => {
-    console.log("IN day_prepare")
+    console.log("IN game_over")
     clearTimer();
-    renderMafiaVoteWait(data);
+    renderGameOver(data);
+});
+
+socket.on('wait_room_joined', ({ lobbyName, players }) => {
+    console.log("IN wait_room_joined")
+    console.log(lobbyName, players)
+    renderWaitRoom({ players: players });
+});
+
+socket.on('new_player_wait_room', ({ newPlayer, players }) => {
+    console.log("IN new_player_wait_room")
+    updateWaitRoomPlayerList(players);
+    addChatMessage(`!${newPlayer} joined the wait room`);
 });
 
 //#endregion

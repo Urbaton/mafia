@@ -4,7 +4,7 @@ import { sendMessage } from '../controllers/chat-controller.js';
 import {
     getRole, finishRoleAssign, finishNightPrepare, finishMafiaVote, processNextStage,
     finishDoctorVote, finishDetectiveVote, finishDayPrepare, finishCitizenVote,
-    finishCitizenVoteResult, mafiaVote, doctorVote, detectiveVote, citizenVote
+    finishCitizenVoteResult, mafiaVote, doctorVote, detectiveVote, citizenVote, finishGameOver
 } from '../controllers/game-controller.js';
 
 
@@ -37,6 +37,7 @@ export default function (io) {
         socket.on('citizen_vote', (data) => citizenVote(io, socket, data));
         socket.on('finish_citizens_vote', () => finishCitizenVote(io, socket));
         socket.on('finish_citizens_vote_result', () => finishCitizenVoteResult(io, socket));
+        socket.on('finish_game_over', () => finishGameOver(io, socket));
 
         // Чат
         socket.on('send_chat_message', (data) => sendMessage(io, socket, data));

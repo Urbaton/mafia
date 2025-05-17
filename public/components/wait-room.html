@@ -1,0 +1,33 @@
+<template id="wait-room-template">
+    <div id="game-screen" class="screen-container game-layout">
+        <!-- Левая часть -->
+        <div class="left-column">
+            <h2 class="screen-title">Комната ожидания: <span id="room-name"></span></h2>
+
+            <div>
+                <h3>Игроки:</h3>
+                <div id="players-list" class="players-list">
+                    <!-- Список игроков будет динамически обновляться -->
+                </div>
+            </div>
+
+            <div class="bottom-section">
+                <div id="leave-section" class="centered">
+                    <button id="leave-button" class="btn btn-secondary">Выйти из комнаты</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая часть -->
+        <div class="right-column">
+            <h3>Чат</h3>
+            <div id="chat-section" class="chat-section">
+                <div id="chat-messages" class="chat-messages"></div>
+                <div class="chat-input-group">
+                    <input type="text" id="chat-input" placeholder="Введите сообщение..." style="width: auto;">
+                    <button id="chat-send" class="btn btn-secondary full-width-btn">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

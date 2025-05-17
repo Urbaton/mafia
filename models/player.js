@@ -5,7 +5,7 @@ class Player {
         this.isReady = false;     // готовность к началу игры
         this.role = null;         // роль в игре (мафия, доктор и т.д.)
         this.isAlive = true;      // жив или мёртв
+        this.isInWaitRoom = false;      // находится ли в комнате ожидания
     }
 }
-
 export default Player;

@@ -5,9 +5,9 @@ import config from '../config/index.js';
 class Lobby {
     constructor(lobbyName, password, ownerSocketId, ownerName) {
         this.lobbyName = lobbyName;
-        this.lobbyNameAlive = lobbyName + "Alive";
-        this.lobbyNameDead = lobbyName + "Dead";
-        this.lobbyNameMafia = lobbyName + "Mafia";
+        this.lobbyNameAlive = lobbyName + ":alive";
+        this.lobbyNameDead = lobbyName + ":dead";
+        this.lobbyNameMafia = lobbyName + ":mafia";
         this.isGameStarted = false;
         this.password = password;
         this.ownerSocketId = ownerSocketId;
@@ -17,7 +17,8 @@ class Lobby {
     }
 
     startGame(settings) {
-        this.game = new Game(this.getPlayerList(), settings);
+        this.game = new Game(this.players, settings);
+        this.isGameStarted = true;
     }
 
     endGame() {
@@ -32,7 +33,10 @@ class Lobby {
     }
 
     removePlayer(socketId) {
+        console.log(`Удалён игрок: ${this.players[socketId].name}`);
         delete this.players[socketId];
+        if (this.game !== null)
+            delete this.game.players[socketId];
     }
 
     getPlayerList() {
@@ -45,6 +49,13 @@ class Lobby {
             socketId: player.socketId,
             isReady: player.isReady,
             isOwner: this.ownerSocketId === player.socketId,
+        }));
+    }
+
+    getPlayerWaitRoomList() {
+        return Object.values(this.players).filter(x => !x.isAlive).map(player => ({
+            name: player.name,
+            socketId: player.socketId,
         }));
     }
 

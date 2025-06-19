@@ -1,10 +1,21 @@
 import socket from '../socket.js';
 
-export function addChatMessage(text) {
+export function addChatMessage(sender, message, isOwn = false) {
     const messages = document.getElementById('chat-messages');
-    const div = document.createElement('div');
-    div.textContent = text;
-    messages.appendChild(div);
+    const container = document.createElement('div');
+    container.className = `chat-message ${isOwn ? 'own-message' : ''}`;
+
+    const senderElement = document.createElement('div');
+    senderElement.className = 'chat-sender';
+    senderElement.textContent = sender;
+
+    const textElement = document.createElement('div');
+    textElement.className = 'chat-text';
+    textElement.textContent = message;
+
+    container.appendChild(senderElement);
+    container.appendChild(textElement);
+    messages.appendChild(container);
     messages.scrollTop = messages.scrollHeight;
 }
 

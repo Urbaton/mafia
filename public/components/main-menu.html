@@ -1,27 +1,37 @@
 <template id="lobby-template">
-    <div id="lobby-screen" class="screen-container">
-        <h2 class="screen-title">Мафия</h2>
+    <div id="lobby-screen" class="screen-container lobby-screen">
+        <!-- Левая половина - форма -->
+        <div class="lobby-form-container">
+            <div class="form-content">
+                <h2 class="screen-title">Мафия</h2>
 
-        <form id="lobby-form" class="lobby-form">
-            <fieldset>
-                <label for="player-name">Ваше имя:</label>
-                <input type="text" id="player-name" placeholder="Введите имя" required>
-            </fieldset>
+                <form id="lobby-form" class="lobby-form">
+                    <fieldset>
+                        <label for="player-name">Ваше имя:</label>
+                        <input type="text" id="player-name" placeholder="Введите имя" required>
+                    </fieldset>
 
-            <fieldset>
-                <label for="lobby-name">Имя комнаты:</label>
-                <input type="text" id="lobby-name" placeholder="Введите название" required>
-            </fieldset>
+                    <fieldset>
+                        <label for="lobby-name">Имя комнаты:</label>
+                        <input type="text" id="lobby-name" placeholder="Введите название" required>
+                    </fieldset>
 
-            <fieldset>
-                <label for="lobby-password">Пароль (опционально):</label>
-                <input type="password" id="lobby-password" placeholder="Введите пароль">
-            </fieldset>
+                    <fieldset>
+                        <label for="lobby-password">Пароль (опционально):</label>
+                        <input type="password" id="lobby-password" placeholder="Введите пароль">
+                    </fieldset>
 
-            <div class="button-group">
-                <button type="button" id="create-lobby" class="btn btn-primary">Создать комнату</button>
-                <button type="button" id="join-lobby" class="btn btn-secondary">Подключиться</button>
+                    <div class="button-group">
+                        <button type="button" id="create-lobby" class="btn btn-primary">Создать комнату</button>
+                        <button type="button" id="join-lobby" class="btn btn-secondary">Подключиться</button>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
+
+        <!-- Правая половина - картинка -->
+        <div class="lobby-image-container">
+            <img src="../images/MAFIA_LAND.png" class="lobby-image" alt="Mafia Game">
+        </div>
     </div>
 </template>

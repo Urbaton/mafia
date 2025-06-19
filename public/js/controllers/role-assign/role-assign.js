@@ -9,6 +9,7 @@ export function initRoleAssignHandlers(data) {
 
 function showRole({ role, sameRolePlayers }) {
     // Захватываем элементы по ID
+    const page = document.getElementById('role-screen');
     const roleInfo = document.getElementById('role-info');
     const roleText = document.getElementById('player-role-text');
     const roleDescription = document.getElementById('role-description');
@@ -18,6 +19,7 @@ function showRole({ role, sameRolePlayers }) {
 
     switch (role) {
         case 'MAFIA':
+            page.style.backgroundColor = "var(--dark_red)";
             roleInfo.classList.add('role-mafia');
             roleText.textContent = 'Мафия';
             roleDescription.textContent = 'Вы член мафии. Ваша цель — устранить всех мирных жителей. Осторожно: не выдайте себя!';
@@ -52,9 +54,9 @@ function showOtherMafias(otherMafias) {
     mafiaList.innerHTML = '';
 
     otherMafias.forEach(name => {
-        const li = document.createElement('li');
-        li.textContent = name;
-        mafiaList.appendChild(li);
+        const mafia = document.createElement('div');
+        mafia.innerHTML = `<img src="../../../../public/images/avatar.png"><p>${name}</p>`;
+        mafiaList.appendChild(mafia);
     });
 }
 

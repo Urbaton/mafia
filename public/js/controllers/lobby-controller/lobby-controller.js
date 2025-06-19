@@ -1,6 +1,6 @@
 import socket from '../socket.js';
-import { renderMainMenu } from '../../utils/router.js';
-import { sendChatMessage } from '../chat/chat-controller.js';
+import {renderMainMenu} from '../../utils/router.js';
+import {sendChatMessage} from '../chat/chat-controller.js';
 
 export function initLobbyHandlers(data) {
     document.getElementById('ready-button').addEventListener('click', markReady);
@@ -64,7 +64,8 @@ export function updatePlayerList(players) {
     list.innerHTML = '';
     players.forEach(player => {
         const div = document.createElement('div');
-        div.textContent = `${player.isOwner ? '👑' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})`;
+        div.classList.add('player-list-item');
+        div.innerHTML = `<img src="../images/avatar.png"><p>${player.isOwner ? '(Я)' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
         list.appendChild(div);
     });
 

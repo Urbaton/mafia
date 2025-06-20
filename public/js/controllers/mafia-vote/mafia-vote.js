@@ -27,7 +27,7 @@ function renderTargets(players) {
     players.forEach(player => {
         const item = document.createElement('div');
         item.classList.add('player-list-item');
-        item.innerHTML = `<img src="../images/avatar.png"><p>${player.name}</p>`;
+        item.innerHTML = `<img src="../images/avatar.svg"><p>${player.name}</p>`;
         item.dataset.socketId = player.socketId;
 
         item.addEventListener('click', () => {

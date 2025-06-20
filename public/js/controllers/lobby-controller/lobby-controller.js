@@ -65,7 +65,7 @@ export function updatePlayerList(players) {
     players.forEach(player => {
         const div = document.createElement('div');
         div.classList.add('player-list-item');
-        div.innerHTML = `<img src="../images/avatar.png"><p>${player.isOwner ? '(Я)' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
+        div.innerHTML = `<img src="../images/avatar.svg"><p>${player.isOwner ? '(Я)' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
         list.appendChild(div);
     });
 

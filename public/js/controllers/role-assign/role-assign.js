@@ -1,5 +1,5 @@
 import socket from '../socket.js';
-import { startTimerEvent } from '../../utils/timer.js'
+import {startTimerEvent} from '../../utils/timer.js'
 
 export function initRoleAssignHandlers(data) {
     showRole(data)
@@ -7,7 +7,7 @@ export function initRoleAssignHandlers(data) {
     startTimerEvent(data.countdownMs, data.serverTime, 'finish_role_assign', socket);
 }
 
-function showRole({ role, sameRolePlayers }) {
+function showRole({role, sameRolePlayers}) {
     // Захватываем элементы по ID
     const page = document.getElementById('role-screen');
     const roleInfo = document.getElementById('role-info');
@@ -55,7 +55,11 @@ function showOtherMafias(otherMafias) {
 
     otherMafias.forEach(name => {
         const mafia = document.createElement('div');
-        mafia.innerHTML = `<img src="../../../../public/images/avatar.png"><p>${name}</p>`;
+        mafia.innerHTML = `
+<div>
+    <img src="../images/avatar.svg">
+    <p>мяу</p>
+</div>`;
         mafiaList.appendChild(mafia);
     });
 }

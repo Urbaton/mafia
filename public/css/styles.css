@@ -223,17 +223,19 @@ input:focus {
 }
 
 .player-list-item {
-    height: 50px;
     text-align: center;
     box-sizing: border-box;
     padding: 10px;
-    background-color: #f7f7f7;
     border-radius: 6px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     font-size: 16px;
+}
+
+.player-list-item img{
+    height: 150px;
 }
 
 .centered {
@@ -360,6 +362,13 @@ input:focus {
 
 .mafia-list div {
     font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.mafia-list img {
+    height: 150px;
 }
 
 .hidden {

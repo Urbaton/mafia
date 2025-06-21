@@ -26,7 +26,4 @@ function renderWinPlayers(players) {
         div.innerHTML = `<img src="../images/avatar.svg"><p>${player.isOwner ? '(Я)' : ''} ${player.name}</p>`;
         list.appendChild(div);
     });
-
-    const playersCount = document.getElementById('players-count');
-    playersCount.innerHTML = `${players.length}`;
 }

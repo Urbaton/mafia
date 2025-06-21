@@ -1,9 +1,9 @@
 import { createClient } from 'redis';
 import Lobby from '../models/lobby.js';
 import Player from '../models/player.js';
-import config from "../config/index.js"
 
-const redis = createClient({ url: config.server.redisHost });
+console.log(process.env.REDIS_URL || 'redis://localhost:6379');
+const redis = createClient({ url: process.env.REDIS_URL || 'redis://localhost:6379' });
 redis.on('error', err => console.error('Redis Error', err));
 
 const lobbies = {};

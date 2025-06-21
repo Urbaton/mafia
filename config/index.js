@@ -6,7 +6,6 @@ const config = ini.parse(fs.readFileSync('./config/config.ini', 'utf-8'));
 
 // Преобразуем нужные типы
 config.server.port = parseInt(config.server.port);
-config.server.redisHost = parseInt(config.server.redisHost);
 
 config.game.maxPlayers = parseInt(config.game.maxPlayers);
 config.game.minPlayers = parseInt(config.game.minPlayers);

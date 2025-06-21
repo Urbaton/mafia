@@ -1,7 +1,6 @@
 import lobbyStore from '../database/lobbyStore.js';
-import { roles } from "../models/constants.js";
+import {gameStages, roles} from "../models/constants.js";
 import config from "../config/index.js"
-import { gameStages } from '../models/constants.js'
 
 
 export function getRole(io, socket) {
@@ -113,7 +112,7 @@ export function finishGameOver(io, socket) {
     lobby.endGame();
 
     const allPlayers = lobby.getPlayerLobbyList();
-    io.to(lobby.lobbyName).emit('lobby_joined', { lobbyName: lobby.lobbyName, players: allPlayers });
+    io.to(lobby.lobbyName).emit('lobby_joined', {lobbyName: lobby.lobbyName, players: allPlayers});
 };
 
 export function mafiaVote(io, socket, data) {
@@ -142,7 +141,7 @@ export function detectiveVote(io, socket, data) {
 
     const target = lobby.players[data.targetId]
 
-    socket.emit("detective_vote_result", { isMafia: target.role[1] == roles.MAFIA[1] })
+    socket.emit("detective_vote_result", {isMafia: target.role[1] == roles.MAFIA[1]})
 };
 
 export function citizenVote(io, socket, data) {
@@ -193,11 +192,12 @@ export function processNextStage(io, socket) {
         case gameStages.GAME_END[1]:
             processGameOver(io, socket, lobby)
             break;
-    };
-};
+    }
+}
 
 function processGameOver(io, socket, lobby) {
     const mafiaWin = !lobby.game.areCitizensWin();
+    lobby.setWinedPlayers(mafiaWin);
 
     const player = lobby.players[socket.id];
 
@@ -213,7 +213,8 @@ function processGameOver(io, socket, lobby) {
     socket.emit('game_over', {
         countdownMs: config.game.gameResultDurationMs,
         serverTime: lobby.game.stageStartTime,
-        mafiaWin: mafiaWin
+        mafiaWin: mafiaWin,
+        winPlayers: lobby.winedPlayers,
     });
 }
 
@@ -341,7 +342,7 @@ function handleKilledPlayer(io, socket, lobby, player) {
     socket.leave(lobby.lobbyNameMafia);
 
     const allPlayers = lobby.getPlayerWaitRoomList();
-    io.to(lobby.lobbyNameDead).emit('new_player_wait_room', { newPlayer: player.name, players: allPlayers });
+    io.to(lobby.lobbyNameDead).emit('new_player_wait_room', {newPlayer: player.name, players: allPlayers});
     socket.join(lobby.lobbyNameDead);
-    socket.emit('wait_room_joined', { lobbyName: lobby.lobbyName, players: allPlayers });
+    socket.emit('wait_room_joined', {lobbyName: lobby.lobbyName, players: allPlayers});
 }

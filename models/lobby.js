@@ -1,6 +1,7 @@
 import Player from './player.js';
 import Game from './game.js';
 import config from '../config/index.js';
+import {roles} from "./constants.js";
 
 class Lobby {
     constructor(lobbyName, password, ownerSocketId, ownerName) {
@@ -14,6 +15,7 @@ class Lobby {
         this.players = {};   // { socketId: Player }
         this.game = null;
         this.addPlayer(ownerSocketId, ownerName);
+        this.winedPlayers = null;
     }
 
     startGame(settings) {
@@ -24,6 +26,18 @@ class Lobby {
     endGame() {
         this.game = null;
         this.isGameStarted = false;
+        this.winedPlayers = null;
+    }
+
+    setWinedPlayers(isMafiaWin) {
+        if (this.winedPlayers) {
+            return;
+        }
+        this.winedPlayers = this.getPlayerList().filter(
+            player => isMafiaWin
+                ? player.role === roles.MAFIA
+                : player.role !== roles.MAFIA
+        );
     }
 
     addPlayer(socketId, name) {

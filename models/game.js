@@ -35,10 +35,10 @@ class Game {
         if (gameStagesArray[next][1] == gameStages.ROLE_ASSIGN[1]) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next][1] == gameStages.DOCTOR_VOTE[1] && !this.hasDoctor) {
+        if (gameStagesArray[next][1] == gameStages.DETECTIVE_VOTE[1] && !this.hasDetective) {
             next = (next + 1) % gameStagesArray.length
         }
-        if (gameStagesArray[next][1] == gameStages.DETECTIVE_VOTE[1] && !this.hasDetective) {
+        if (gameStagesArray[next][1] == gameStages.DOCTOR_VOTE[1] && !this.hasDoctor) {
             next = (next + 1) % gameStagesArray.length
         }
 

@@ -23,18 +23,18 @@ function scheduleEvict(name, seconds) {
 function persist(lobby) {
     const key = `lobby:${lobby.lobbyName}`;
     const data = {
-        lobbyName:     lobby.lobbyName,
-        password:      lobby.password,
+        lobbyName: lobby.lobbyName,
+        password: lobby.password,
         ownerSocketId: lobby.ownerSocketId,
         isGameStarted: lobby.isGameStarted,
         players: Object.fromEntries(
             Object.entries(lobby.players).map(([id, p]) => [id, {
-                socketId:    p.socketId,
-                name:        p.name,
-                isReady:     p.isReady,
-                role:        p.role,
-                isAlive:     p.isAlive,
-                isInWaitRoom:p.isInWaitRoom
+                socketId: p.socketId,
+                name: p.name,
+                isReady: p.isReady,
+                role: p.role,
+                isAlive: p.isAlive,
+                isInWaitRoom: p.isInWaitRoom
             }])
         )
     };
@@ -57,9 +57,9 @@ async function loadLobby(name) {
     lobby.players = {};
     for (const [id, p] of Object.entries(obj.players)) {
         const pl = new Player(p.socketId, p.name);
-        pl.isReady      = p.isReady;
-        pl.role         = p.role;
-        pl.isAlive      = p.isAlive;
+        pl.isReady = p.isReady;
+        pl.role = p.role;
+        pl.isAlive = p.isAlive;
         pl.isInWaitRoom = p.isInWaitRoom;
         lobby.players[id] = pl;
     }
@@ -73,6 +73,11 @@ async function loadLobby(name) {
 
 (async () => {
     await redis.connect();
+
+    console.log('Flushing Redis...');
+    await redis.flushAll();
+    console.log('Redis cleared, ready to go.');
+
     const names = await redis.sMembers('lobbies');
     await Promise.all(names.map(async name => {
         const ok = await loadLobby(name);

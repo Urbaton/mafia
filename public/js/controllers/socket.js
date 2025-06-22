@@ -49,13 +49,11 @@ socket.on('error', ({message}) => {
 
 socket.on('lobby_created', ({lobbyName, players}) => {
     console.log("IN lobby_created")
-    console.log(lobbyName, players)
     renderLobby({players: players});
 });
 
 socket.on('lobby_joined', ({lobbyName, players}) => {
     console.log("IN lobby_joined")
-    console.log(lobbyName, players)
     renderLobby({players: players});
 });
 
@@ -107,7 +105,6 @@ socket.on('stage_end', () => {
 
 socket.on('role_assign', (data) => {
     console.log("IN role_assign")
-    console.log(data)
     renderRoleAssign(data)
 });
 
@@ -184,7 +181,6 @@ socket.on('game_over', (data) => {
 
 socket.on('wait_room_joined', ({lobbyName, players}) => {
     console.log("IN wait_room_joined")
-    console.log(lobbyName, players)
     renderWaitRoom({players: players});
 });
 

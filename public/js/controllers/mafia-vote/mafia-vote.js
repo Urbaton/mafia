@@ -35,7 +35,6 @@ function renderTargets(players) {
             document.querySelectorAll('.player-list-item').forEach(el => el.classList.remove('selected'));
             item.classList.add('selected');
             selectedTargetId = player.socketId;
-            console.log(selectedTargetId)
             document.getElementById('confirm-target-button').disabled = false;
         });
 
@@ -48,11 +47,7 @@ function confirmTarget() {
 
     targetConfirmed = true
 
-    console.log(`Цель выбрана: ${selectedTargetId}`);
-
     socket.emit('mafia_vote', { targetId: selectedTargetId });
-
-    console.log()
 
     const confirmButton = document.getElementById('confirm-target-button')
     confirmButton.disabled = true;

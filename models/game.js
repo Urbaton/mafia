@@ -47,7 +47,6 @@ class Game {
     }
 
     updateGameState() {
-        console.log(this.getAlivePlayers())
         const mafiaWin = this.isMafiaWin();
         const citizensWin = this.areCitizensWin();
         this.gameOver = mafiaWin || citizensWin;

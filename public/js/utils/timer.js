@@ -23,11 +23,10 @@ export function startTimerEvent(countdownMs, serverTime, event, socket) {
         const now = Date.now();
         const delta = now - serverTime;
         effectiveDelay = Math.max(0, countdownMs - delta);
-        console.log(`Коррекция таймера: прошло ${delta}мс, запускаем таймер на ${effectiveDelay}мс`);
     }
 
     const timer = setTimeout(() => {
-        console.log('Таймер истёк, отправляем screen-change-request');
+        console.log('Таймер истёк');
         socket.emit(event);
         setTimer(null);
     }, effectiveDelay);

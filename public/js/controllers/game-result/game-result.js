@@ -23,7 +23,7 @@ function renderWinPlayers(players) {
     players.forEach(player => {
         const div = document.createElement('div');
         div.classList.add('player-list-item');
-        div.innerHTML = `<img src="../images/avatar.svg"><p>${player.isOwner ? '(Я)' : ''} ${player.name}</p>`;
+        div.innerHTML = `<img src="../images/avatar.svg"><p style="color: white;"> ${player.isOwner ? '(Я)' : ''} ${player.name}</p>`;
         list.appendChild(div);
     });
 }

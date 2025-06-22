@@ -281,7 +281,7 @@ function processDayPrepareStage(io, socket, lobby) {
     const doctorTarget = lobby.game.votes.doctorVote;
 
     let baseData = {
-        countdownMs: config.game.detectiveVoteDurationMs,
+        countdownMs: config.game.prepareDayDurationMs,
         serverTime: lobby.game.stageStartTime,
         killedPlayer: null
     }

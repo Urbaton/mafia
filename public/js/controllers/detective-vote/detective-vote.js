@@ -49,10 +49,11 @@ function confirmTarget() {
 
     targetConfirmed = true;
 
+    socket.emit('detective_vote', { targetId: selectedTargetId });
+
     const confirmButton = document.getElementById('confirm-target-button');
     confirmButton.disabled = true;
-
-    socket.emit('detective_vote', { targetId: selectedTargetId });
+    confirmButton.classList.add('btn-disabled-visual');
 
     const resultBox = document.getElementById('detective-result');
     resultBox.textContent = 'Проверка...';

@@ -45,8 +45,9 @@ function confirmTarget() {
 
     targetConfirmed = true;
 
+    socket.emit('doctor_vote', { targetId: selectedTargetId });
+
     const confirmButton = document.getElementById('confirm-target-button');
     confirmButton.disabled = true;
-
-    socket.emit('doctor_vote', { targetId: selectedTargetId });
+    confirmButton.classList.add('btn-disabled-visual');
 }

@@ -51,4 +51,5 @@ function confirmTarget() {
 
     const confirmButton = document.getElementById('confirm-target-button')
     confirmButton.disabled = true;
+    confirmButton.classList.add('btn-disabled-visual');
 }

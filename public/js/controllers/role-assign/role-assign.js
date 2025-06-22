@@ -19,7 +19,6 @@ function showRole({role, sameRolePlayers}) {
 
     switch (role) {
         case 'MAFIA':
-            page.style.backgroundColor = "var(--dark_red)";
             roleInfo.classList.add('role-mafia');
             roleText.textContent = 'Мафия';
             roleDescription.textContent = 'Вы член мафии. Ваша цель — устранить всех мирных жителей. Осторожно: не выдайте себя!';

@@ -309,6 +309,12 @@ input:focus {
     color: white;
 }
 
+.btn-disabled-visual {
+    opacity: 0.5;
+    pointer-events: none;
+    filter: grayscale(50%);
+}
+
 .ready-button-green,
 .ready-button-red {
     transition: background-color 0.2s ease;
@@ -432,7 +438,7 @@ input:focus {
     height: 100%;
     width: 100%;
     /* изначально заполнен */
-    background-color: #FFE100;
+    background-color: #ff4800;
     /* зелёный */
     transition: width 0.1s linear;
 }

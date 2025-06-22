@@ -25,7 +25,7 @@ function renderWinPlayers(players) {
         const avatar = GetAvatarByName(player.name);
         const div = document.createElement('div');
         div.classList.add('player-list-item');
-        div.innerHTML = `<img src=${avatar}><p style="color: white;"> ${player.isOwner ? '(Я)' : ''} ${player.name}</p>`;
+        div.innerHTML = `<img src=${avatar}><p style="color: white;">${player.name}</p>`;
         list.appendChild(div);
     });
 }

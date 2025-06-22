@@ -366,13 +366,12 @@ input:focus {
     justify-content: center;
     padding: 0;
     gap: 50px;
-    color: white;
+    color: black;
     width: 100%;
     margin-bottom: 32px;
 }
 
 .mafia-list div {
-    font-size: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -9,7 +9,7 @@ export function getRole(io, socket) {
 
     const players = lobby.getPlayerList();
     const player = lobby.players[socket.id];
-    const mafiaPlayers = players.filter(player => player.role === roles.MAFIA && player.socketId != socket.id);
+    const mafiaPlayers = players.filter(player => player.role === roles.MAFIA);
     const sameRolePlayers = player.role === roles.MAFIA ? mafiaPlayers : []
 
     socket.join(lobby.lobbyNameAlive);
@@ -41,9 +41,8 @@ function finishStage(io, socket, currentStage, callback = null) {
         group = lobby.lobbyName
     }
 
-    const stage = lobby.game.nextStage()
+    lobby.game.nextStage()
     lobby.game.stageStartTime = Date.now()
-    console.log(stage)
 
     io.to(group).emit('stage_end');
 };
@@ -337,6 +336,8 @@ function killPlayer(lobby, player) {
 
 function handleKilledPlayer(io, socket, lobby, player) {
     if (player.isInWaitRoom) return;
+
+    player.isInWaitRoom = true;
 
     socket.leave(lobby.lobbyNameAlive);
     socket.leave(lobby.lobbyNameMafia);

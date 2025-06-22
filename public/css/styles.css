@@ -368,6 +368,7 @@ input:focus {
     gap: 50px;
     color: white;
     width: 100%;
+    margin-bottom: 32px;
 }
 
 .mafia-list div {
@@ -417,6 +418,7 @@ input:focus {
     align-items: center;
     justify-content: center;
     width: 100%;
+    margin-bottom: 32px;
 }
 
 .players-list img{

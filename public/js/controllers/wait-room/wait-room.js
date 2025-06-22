@@ -1,6 +1,7 @@
 import socket from '../socket.js';
-import { renderMainMenu } from '../../utils/router.js';
-import { sendChatMessage } from '../chat/chat-controller.js';
+import {renderMainMenu} from '../../utils/router.js';
+import {sendChatMessage} from '../chat/chat-controller.js';
+import GetAvatarByName from "../../utils/name-to-avatar.js";
 
 export function initWaitRoomHandlers(data) {
     document.getElementById('chat-send').addEventListener('click', sendChatMessage);
@@ -19,8 +20,10 @@ export function updateWaitRoomPlayerList(players) {
     const list = document.getElementById('players-list');
     list.innerHTML = '';
     players.forEach(player => {
+        const avatar = GetAvatarByName(player.name);
         const div = document.createElement('div');
-        div.textContent = player.name;
+        div.classList.add('player-list-item');
+        div.innerHTML = `<img src=${avatar}><p>${player.name}</p>`;
         list.appendChild(div);
     });
 }

@@ -18,6 +18,10 @@ export function leaveLobby(io, socket) {
     if (!lobby.isGameStarted)
         io.to(lobby.lobbyName).emit('player_left', { playerLeft: playerLeft.name, players: lobby.getPlayerLobbyList() });
 
+    if (playerLeft.isInWaitRoom) {
+        io.to(lobby.lobbyNameDead).emit('player_left_wait_room', { playerLeft: playerLeft.name, players: lobby.getPlayerWaitRoomList() });
+    }
+
     if (lobby.isEmpty()) {
         lobbyStore.deleteLobby(lobby.lobbyName);
     } else {

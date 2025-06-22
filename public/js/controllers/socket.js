@@ -1,8 +1,8 @@
-import {addChatMessage} from '../controllers/chat/chat-controller.js';
-import {clearTimer} from '../utils/timer.js'
-import {updatePlayerList} from './lobby-controller/lobby-controller.js';
-import {updateWaitRoomPlayerList} from './wait-room/wait-room.js';
-import {handleDetectiveResult} from './detective-vote/detective-vote.js';
+import { addChatMessage } from '../controllers/chat/chat-controller.js';
+import { clearTimer } from '../utils/timer.js'
+import { updatePlayerList } from './lobby-controller/lobby-controller.js';
+import { updateWaitRoomPlayerList } from './wait-room/wait-room.js';
+import { handleDetectiveResult } from './detective-vote/detective-vote.js';
 import {
     renderCitizensVote,
     renderCitizensVoteResult,
@@ -30,7 +30,7 @@ socket.on('connect', () => {
     renderMainMenu();
 });
 
-socket.on('chat_message', ({sender, message}) => {
+socket.on('chat_message', ({ sender, message }) => {
     console.log("IN chat_message")
     addChatMessage(sender, message, window.myName === sender);
 });
@@ -39,7 +39,7 @@ socket.on('disconnect', () => {
     console.warn('Подключение к серверу разорвано');
 });
 
-socket.on('error', ({message}) => {
+socket.on('error', ({ message }) => {
     alert('Ошибка: ' + message);
 });
 
@@ -47,45 +47,45 @@ socket.on('error', ({message}) => {
 
 //#Lobby events 
 
-socket.on('lobby_created', ({lobbyName, players}) => {
+socket.on('lobby_created', ({ lobbyName, players }) => {
     console.log("IN lobby_created")
-    renderLobby({players: players});
+    renderLobby({ players: players });
 });
 
-socket.on('lobby_joined', ({lobbyName, players}) => {
+socket.on('lobby_joined', ({ lobbyName, players }) => {
     console.log("IN lobby_joined")
-    renderLobby({players: players});
+    renderLobby({ players: players });
 });
 
-socket.on('new_player', ({newPlayer, players}) => {
+socket.on('new_player', ({ newPlayer, players }) => {
     console.log("IN new_player")
     updatePlayerList(players);
-    addChatMessage("system", `!${newPlayer} joined the lobby`);
+    addChatMessage("system", `${newPlayer} joined the lobby`);
 });
 
-socket.on('player_ready', ({players}) => {
+socket.on('player_ready', ({ players }) => {
     console.log("IN player_ready")
     updatePlayerList(players);
 });
 
-socket.on('player_unready', ({players}) => {
+socket.on('player_unready', ({ players }) => {
     console.log("IN player_unready")
     updatePlayerList(players);
 });
 
 
-socket.on('player_left', ({playerLeft, players}) => {
+socket.on('player_left', ({ playerLeft, players }) => {
     console.log("IN player_ready")
     updatePlayerList(players);
-    addChatMessage("system",`!${playerLeft} left the lobby`);
+    addChatMessage("system", `${playerLeft} left the lobby`);
 });
 
-socket.on('new_lobby_owner', ({newOwnerSocketId, newOwnerName, players}) => {
+socket.on('new_lobby_owner', ({ newOwnerSocketId, newOwnerName, players }) => {
     if (socket.id === newOwnerSocketId) {
         document.getElementById('settings-section').style.display = 'block';
     }
     updatePlayerList(players);
-    addChatMessage("system", `!${newOwnerName} is owner of lobby now`);
+    addChatMessage("system", `${newOwnerName} is owner of lobby now`);
 });
 
 socket.on('game_started', () => {
@@ -179,15 +179,21 @@ socket.on('game_over', (data) => {
     renderGameOver(data);
 });
 
-socket.on('wait_room_joined', ({lobbyName, players}) => {
+socket.on('wait_room_joined', ({ lobbyName, players }) => {
     console.log("IN wait_room_joined")
-    renderWaitRoom({players: players});
+    renderWaitRoom({ players: players });
 });
 
-socket.on('new_player_wait_room', ({newPlayer, players}) => {
+socket.on('player_left_wait_room', ({ playerLeft, players }) => {
+    console.log("IN player_left_wait_room")
+    updateWaitRoomPlayerList(players);
+    addChatMessage("system", `${playerLeft} left the lobby`);
+});
+
+socket.on('new_player_wait_room', ({ newPlayer, players }) => {
     console.log("IN new_player_wait_room")
     updateWaitRoomPlayerList(players);
-    addChatMessage("system", `!${newPlayer} joined the wait room`);
+    addChatMessage("system", `${newPlayer} joined the wait room`);
 });
 
 //#endregion

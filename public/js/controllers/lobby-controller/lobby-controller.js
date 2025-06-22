@@ -67,7 +67,7 @@ export function updatePlayerList(players) {
         const avatar = GetAvatarByName(player.name);
         const div = document.createElement('div');
         div.classList.add('player-list-item');
-        div.innerHTML = `<img src=${avatar}><p>${player.isOwner ? '(Я)' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
+        div.innerHTML = `<img src=${avatar}><p>${player.isOwner ? '👑' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
         list.appendChild(div);
     });
 

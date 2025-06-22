@@ -363,9 +363,11 @@ input:focus {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     padding: 0;
     gap: 50px;
     color: white;
+    width: 100%;
 }
 
 .mafia-list div {
@@ -413,6 +415,8 @@ input:focus {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .players-list img{

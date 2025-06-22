@@ -1,5 +1,6 @@
 import socket from '../socket.js';
 import {startTimerEvent} from '../../utils/timer.js'
+import GetAvatarByName from "../../utils/name-to-avatar.js";
 
 export function initRoleAssignHandlers(data) {
     showRole(data)
@@ -54,10 +55,11 @@ function showOtherMafias(otherMafias) {
 
     otherMafias.forEach(name => {
         const mafia = document.createElement('div');
+        const avatar = GetAvatarByName(name);
         mafia.innerHTML = `
 <div>
-    <img src="../images/avatar.svg">
-    <p>мяу</p>
+    <img src=${avatar}>
+    <p>${name}</p>
 </div>`;
         mafiaList.appendChild(mafia);
     });

@@ -1,6 +1,7 @@
 import socket from '../socket.js';
-import { startTimerEvent } from '../../utils/timer.js'
-import { sendChatMessage } from '../chat/chat-controller.js';
+import {startTimerEvent} from '../../utils/timer.js'
+import {sendChatMessage} from '../chat/chat-controller.js';
+import GetAvatarByName from "../../utils/name-to-avatar.js";
 
 export function initCitizensVoteHandlers(data) {
     defaultGlobals()
@@ -25,9 +26,10 @@ function renderTargets(players) {
     list.innerHTML = '';
 
     players.forEach(player => {
+        const avatar = GetAvatarByName(player.name);
         const item = document.createElement('div');
         item.classList.add('player-list-item');
-        item.innerHTML = `<img src="../images/avatar.svg"><p>${player.name}</p>`;
+        item.innerHTML = `<img src=${avatar}><p>${player.name}</p>`;
         item.dataset.socketId = player.socketId;
 
         item.addEventListener('click', () => {
@@ -47,7 +49,7 @@ function confirmTarget() {
 
     targetConfirmed = true
 
-    socket.emit('citizen_vote', { targetId: selectedTargetId });
+    socket.emit('citizen_vote', {targetId: selectedTargetId});
 
     const confirmButton = document.getElementById('confirm-target-button')
     confirmButton.disabled = true;

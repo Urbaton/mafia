@@ -1,6 +1,7 @@
 import socket from '../socket.js';
 import {renderMainMenu} from '../../utils/router.js';
 import {sendChatMessage} from '../chat/chat-controller.js';
+import GetAvatarByName from "../../utils/name-to-avatar.js";
 
 export function initLobbyHandlers(data) {
     document.getElementById('ready-button').addEventListener('click', markReady);
@@ -63,9 +64,10 @@ export function updatePlayerList(players) {
     const list = document.getElementById('players-list');
     list.innerHTML = '';
     players.forEach(player => {
+        const avatar = GetAvatarByName(player.name);
         const div = document.createElement('div');
         div.classList.add('player-list-item');
-        div.innerHTML = `<img src="../images/avatar.svg"><p>${player.isOwner ? '(Я)' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
+        div.innerHTML = `<img src=${avatar}><p>${player.isOwner ? '(Я)' : ''} ${player.name} (${player.isReady ? 'готов' : 'не готов'})</p>`;
         list.appendChild(div);
     });
 

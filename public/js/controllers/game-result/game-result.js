@@ -1,5 +1,6 @@
 import socket from '../socket.js';
 import {startTimerEvent} from '../../utils/timer.js'
+import GetAvatarByName from "../../utils/name-to-avatar.js";
 
 export function initGameResultHandlers(data) {
 
@@ -21,9 +22,10 @@ function renderWinPlayers(players) {
     const list = document.getElementById('players-list');
     list.innerHTML = '';
     players.forEach(player => {
+        const avatar = GetAvatarByName(player.name);
         const div = document.createElement('div');
         div.classList.add('player-list-item');
-        div.innerHTML = `<img src="../images/avatar.svg"><p style="color: white;"> ${player.isOwner ? '(Я)' : ''} ${player.name}</p>`;
+        div.innerHTML = `<img src=${avatar}><p style="color: white;"> ${player.isOwner ? '(Я)' : ''} ${player.name}</p>`;
         list.appendChild(div);
     });
 }
